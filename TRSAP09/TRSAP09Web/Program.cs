@@ -11,7 +11,8 @@ namespace TRSAP09Web
             builder.Services.AddControllersWithViews();
             
             builder.Services.AddScoped<IRestaurantLogic, RestaurantLogic>();
-            
+            builder.Services.AddScoped<IRestaurantMapper, RestaurantMapper>();
+
             var app = builder.Build();
 
             app.UseStaticFiles();

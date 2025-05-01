@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TRSAP09.Models.Interfaces;
 using TRSAP09.Models;
+using TRSAP09.Viewmodels;
 
 namespace TRSAP09Web.Controlles
 {
     public class RestaurantController : Controller
     {
         private readonly IRestaurantLogic _restaurantLogic;
+        private readonly IRestaurantMapper _mapper;
 
-
-        public RestaurantController(IRestaurantLogic restaurantLogic)
+        public RestaurantController(IRestaurantLogic restaurantLogic, IRestaurantMapper mapper)
         {
             _restaurantLogic = restaurantLogic;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -28,7 +30,8 @@ namespace TRSAP09Web.Controlles
                 || response.StatusCode == Enums.StatusCode.Error || response.Data == null)
                 return NoContent();
 
-            return View(response.Data);
+            var model = _mapper.ToListViewModels(response.Data);
+            return View(model);
         }
 
         [HttpGet]
@@ -39,11 +42,12 @@ namespace TRSAP09Web.Controlles
 
 
         [HttpPost]
-        public IActionResult Register(Restaurant restaurant)
+        public IActionResult Register(RestaurantFormViewModel restaurant)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var response = _restaurantLogic.Register(restaurant);
+                var viewModel = _mapper.Map(restaurant);
+                var response = _restaurantLogic.Register(viewModel);
                 if (response != null
                         && response.StatusCode == Enums.StatusCode.Success)
                     return RedirectToAction("List");

@@ -1,6 +1,5 @@
-﻿@using TRSAP09.Models
-
-@model List<Restaurant>
+﻿@using TRSAP09.Viewmodels
+@model List<RestaurantListViewModel>
 
 <!DOCTYPE html>
 <html>
@@ -48,29 +47,31 @@
 </head>
 <body>
 	<h1>Restaurant-Liste</h1>
-	<table>
+	<table class="table">
 		<thead>
 			<tr>
-				<td>Id</td>
-				<td>Name</td>
-				<td>Adresse</td>
-				<td>PLZ</td>
-				<td>Ort</td>
-				<td>Email</td>
-				<td>Tel.</td>
+				<th>Name</th>
+				<th>Adresse</th>
+				<th>Email</th>
+				<th>Telefon</th>
+				<th>Aktiv</th>
+				<th></th> 
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var restaurant in Model)
+			@foreach (var item in Model)
 			{
 				<tr>
-					<td>@restaurant.RestaurantId</td>
-					<td>@restaurant.Name</td>
-					<td>@restaurant.StreetHouseNr</td>
-					<td>@restaurant.PostalCode</td>
-					<td>@restaurant.City</td>
-					<td>@restaurant.ContactInfo?.Email</td>
-					<td>@restaurant.ContactInfo?.PhoneNumber</td>
+					<td>@item.Name</td>
+					<td>@item.AddressSummary</td>
+					<td>@item.Email</td>
+					<td>@item.PhoneNumber</td>
+					<td>@(item.Activ ? "Ja" : "Nein")</td>
+					<td>
+						<a asp-action="Edit" asp-route-id="@item.RestaurantId">Bearbeiten</a> |
+						<a asp-action="Details" asp-route-id="@item.RestaurantId">Details</a> |
+						<a asp-action="Delete" asp-route-id="@item.RestaurantId">Löschen</a>
+					</td>
 				</tr>
 			}
 		</tbody>

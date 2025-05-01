@@ -1,5 +1,5 @@
-﻿@using TRSAP09.Models
-@model Restaurant
+﻿@using TRSAP09.Viewmodels
+@model RestaurantFormViewModel
 
 <!DOCTYPE html>
 <html lang="de">
@@ -58,6 +58,11 @@
             .btn:hover {
                 background-color: #005fa3;
             }
+
+        .text-danger {
+            color: red;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -67,46 +72,54 @@
         <form asp-action="Register" method="post">
             <div class="form-group">
                 <label asp-for="Name"></label>
-                <input asp-for="Name" type="text" />
+                <input asp-for="Name" type="text" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="StreetHouseNr"></label>
-                <input asp-for="StreetHouseNr" type="text"/>
+                <input asp-for="StreetHouseNr" type="text" class="form-control" />
+                <span asp-validation-for="StreetHouseNr" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="PostalCode"></label>
-                <input asp-for="PostalCode" type="text"/>
+                <input asp-for="PostalCode" type="text" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="City"></label>
-                <input asp-for="City" type="text"/>
+                <input asp-for="City" type="text" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Country"></label>
-                <input asp-for="Country" type="text"/>
+                <input asp-for="Country" type="text" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="ContactInfo.Email"></label>
-                <input asp-for="ContactInfo.Email" type="email" />
+                <label asp-for="Email"></label>
+                <input asp-for="Email" type="email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="ContactInfo.PhoneNumber"></label>
-                <input asp-for="ContactInfo.PhoneNumber" type="text" />
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" type="text" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
 
-            <div class="checkbox-group">
-                <input asp-for="Activ" type="checkbox" />
-                <label asp-for="Activ"></label>
+            <div class="form-group form-check">
+                <input asp-for="Activ" type="checkbox" class="form-check-input" />
+                <label asp-for="Activ" class="form-check-label"></label>
             </div>
 
-            <button type="submit" class="btn">Speichern</button>
+            <button type="submit" class="btn btn-primary">Speichern</button>
         </form>
+
     </div>
 </body>
 </html>
