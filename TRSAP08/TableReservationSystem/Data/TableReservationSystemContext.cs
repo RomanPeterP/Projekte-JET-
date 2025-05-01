@@ -1,0 +1,139 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using TableReservationSystem.Logic;
+using TableReservationSystem.Models;
+
+namespace TableReservationSystem.Data;
+
+public partial class TableReservationSystemContext : DbContext
+{
+    public TableReservationSystemContext()
+    {
+    }
+
+    public TableReservationSystemContext(DbContextOptions<TableReservationSystemContext> options)
+        : base(options)
+    {
+    }
+
+    public virtual DbSet<ContactInfo> ContactInfo { get; set; }
+
+    public virtual DbSet<Country> Country { get; set; }
+
+    public virtual DbSet<Reservation> Reservation { get; set; }
+
+    public virtual DbSet<ReservationStatus> ReservationStatus { get; set; }
+
+    public virtual DbSet<ReservationTime> ReservationTime { get; set; }
+
+    public virtual DbSet<Restaurant> Restaurant { get; set; }
+
+    public virtual DbSet<Table> Table { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer(Config.ConfigItems.GetConnectionString("default"));
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ContactInfo>(entity =>
+        {
+            entity.HasKey(e => e.ContactInfoId);
+            entity.Property(e => e.ContactInfoId).UseIdentityColumn(1, 1);
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.PhoneNumber).HasMaxLength(20);
+        });
+
+        modelBuilder.Entity<Country>(entity =>
+        {
+            entity.HasKey(e => e.CountryCode);
+            entity.Property(e => e.CountryCode)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength();
+            entity.Property(e => e.Name).HasMaxLength(25);
+        });
+
+        modelBuilder.Entity<Reservation>(entity =>
+        {
+            entity.HasKey(e => e.ReservationId);
+            entity.Property(e => e.ReservationId).UseIdentityColumn(1, 1);
+            entity.Property(e => e.ReservationId).ValueGeneratedOnAdd();
+            entity.Property(e => e.AdditionalMessage).HasMaxLength(100);
+            entity.Property(e => e.Name).HasMaxLength(30);
+            entity.Property(e => e.ReservationStatusId).HasDefaultValue((byte)1);
+
+            entity.HasOne(e => e.ContactInfo).WithMany(p => p.Reservations)
+                .HasForeignKey(e => e.ContactInfoId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(e => e.ReservationStatus).WithMany(p => p.Reservations)
+                .HasForeignKey(e => e.ReservationStatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(e => e.ReservationTimes).WithMany(p => p.Reservations)
+                .HasForeignKey(e => e.ReservationTimeId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(e => e.Restaurant).WithMany(p => p.Reservations)
+                .HasForeignKey(e => e.RestaurantId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(e => e.Table).WithMany(p => p.Reservations)
+                .HasForeignKey(e => e.TableNumber)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<ReservationStatus>(entity =>
+        {
+            entity.HasKey(e => e.ReservationStatusId);
+            entity.Property(e => e.ReservationStatusId).UseIdentityColumn(1, 1);
+            entity.Property(e => e.ReservationStatusId).ValueGeneratedOnAdd();
+            entity.Property(e => e.Caption).HasMaxLength(15);
+        });
+
+        modelBuilder.Entity<ReservationTime>(entity =>
+        {
+            entity.HasKey(e => e.ReservationTimeId);
+            entity.Property(e => e.ReservationTimeId).UseIdentityColumn(1, 1);
+            entity.HasKey(e => e.ReservationTimeId);
+        });
+
+        modelBuilder.Entity<Restaurant>(entity =>
+        {
+            entity.HasKey(e => e.RestaurantId);
+            entity.Property(e => e.RestaurantId).UseIdentityColumn(1, 1);
+            entity.Property(e => e.RestaurantId).ValueGeneratedOnAdd();
+            entity.Property(e => e.City).HasMaxLength(20);
+            entity.Property(e => e.CountryCode)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .IsFixedLength();
+            entity.Property(e => e.Name).HasMaxLength(30);
+            entity.Property(e => e.PostalCode).HasMaxLength(15);
+            entity.Property(e => e.StreetHouseNr).HasMaxLength(25);
+            entity.Property(e => e.Activ).HasDefaultValue(true);
+
+            entity.HasOne(e => e.ContactInfo).WithMany(p => p.Restaurants)
+                .HasForeignKey(e => e.ContactInfoId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(e => e.CountryCodeNavigation).WithMany(p => p.Restaurants)
+                .HasForeignKey(e => e.CountryCode)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<Table>(entity =>
+        {
+            entity.HasKey(e => e.TableNumber);
+            entity.Property(e => e.Activ).HasDefaultValue(true);
+            entity.Property(e => e.TableNumber).HasMaxLength(10);
+
+            entity.HasOne(e => e.Restaurant).WithMany(p => p.Tables)
+                .HasForeignKey(e => e.RestaurantId);
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}

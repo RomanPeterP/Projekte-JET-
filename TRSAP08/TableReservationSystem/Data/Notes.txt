@@ -1,0 +1,24 @@
+﻿
+USE TableReservationSystem
+GO
+
+INSERT [dbo].[ReservationStatus]
+  SELECT 
+	'Requested'
+	UNION SELECT
+	'Reserverd'
+	UNION SELECT
+	'Canceled'
+GO
+
+INSERT Country
+  SELECT
+  'AT', 'Österreich'
+  UNION SELECT
+  'DE', 'Deutschland'
+GO
+  
+INSERT [dbo].[ReservationTime]
+  SELECT '12:00' 
+  UNION SELECT'12:15' 
+GO
