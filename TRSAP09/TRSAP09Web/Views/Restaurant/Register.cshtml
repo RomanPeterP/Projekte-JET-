@@ -1,0 +1,112 @@
+﻿@using TRSAP09.Models
+@model Restaurant
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Restaurant bearbeiten</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 0.4rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+            .checkbox-group input[type="checkbox"] {
+                margin-right: 0.5rem;
+            }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn:hover {
+                background-color: #005fa3;
+            }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Restaurant eingeben / bearbeiten</h1>
+
+        <form asp-action="Register" method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" type="text" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StreetHouseNr"></label>
+                <input asp-for="StreetHouseNr" type="text"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PostalCode"></label>
+                <input asp-for="PostalCode" type="text"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <input asp-for="City" type="text"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Country"></label>
+                <input asp-for="Country" type="text"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ContactInfo.Email"></label>
+                <input asp-for="ContactInfo.Email" type="email" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ContactInfo.PhoneNumber"></label>
+                <input asp-for="ContactInfo.PhoneNumber" type="text" />
+            </div>
+
+            <div class="checkbox-group">
+                <input asp-for="Activ" type="checkbox" />
+                <label asp-for="Activ"></label>
+            </div>
+
+            <button type="submit" class="btn">Speichern</button>
+        </form>
+    </div>
+</body>
+</html>

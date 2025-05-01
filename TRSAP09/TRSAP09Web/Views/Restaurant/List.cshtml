@@ -1,0 +1,83 @@
+﻿@using TRSAP09.Models
+
+@model List<Restaurant>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Restaurants</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #eef2f3;
+			padding: 2em;
+		}
+
+		h1 {
+			text-align: center;
+			color: #2c3e50;
+			margin-bottom: 1.5em;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #fff;
+			box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+			border-radius: 6px;
+			overflow: hidden;
+		}
+
+		th, td {
+			padding: 0.8em 1em;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+		th {
+			background-color: #007b5e;
+			color: white;
+		}
+
+		tr:hover {
+			background-color: #f1f1f1;
+		}
+	</style>
+
+</head>
+<body>
+	<h1>Restaurant-Liste</h1>
+	<table>
+		<thead>
+			<tr>
+				<td>Id</td>
+				<td>Name</td>
+				<td>Adresse</td>
+				<td>PLZ</td>
+				<td>Ort</td>
+				<td>Email</td>
+				<td>Tel.</td>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var restaurant in Model)
+			{
+				<tr>
+					<td>@restaurant.RestaurantId</td>
+					<td>@restaurant.Name</td>
+					<td>@restaurant.StreetHouseNr</td>
+					<td>@restaurant.PostalCode</td>
+					<td>@restaurant.City</td>
+					<td>@restaurant.ContactInfo?.Email</td>
+					<td>@restaurant.ContactInfo?.PhoneNumber</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	<div>
+		<br />
+		<a asp-action="Register" asp-controller="Restaurant">Neues Restaurant erfassen</a>
+	</div>
+</body>
+</html>
