@@ -42,5 +42,7 @@ namespace TRSAP09.Viewmodels
         [Url(ErrorMessage = "Bitte eine gültige URL eingeben.")]
         [Display(Name = "Webseite")]
         public string? Website { get; set; }
+
+        public string? Message { get; set; }
     }
 }

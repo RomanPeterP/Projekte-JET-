@@ -6,8 +6,11 @@ namespace TRSAP09.Logic
 {
     public class RestaurantMapper : IRestaurantMapper
     {
-        public RestaurantFormViewModel Map(Restaurant restaurant)
+        public RestaurantFormViewModel Map(Restaurant? restaurant)
         {
+            if(restaurant == null)
+                return new RestaurantFormViewModel();
+            
             return new RestaurantFormViewModel
             {
                 RestaurantId = restaurant.RestaurantId,
@@ -22,28 +25,33 @@ namespace TRSAP09.Logic
             };
         }
 
-        public Restaurant Map(RestaurantFormViewModel vm)
+        public Restaurant Map(RestaurantFormViewModel? viewmodel)
         {
+            if (viewmodel == null)
+                return new Restaurant();
             return new Restaurant
             {
-                RestaurantId = vm.RestaurantId,
-                Name = vm.Name,
-                PostalCode = vm.PostalCode,
-                City = vm.City,
-                StreetHouseNr = vm.StreetHouseNr,
-                Activ = vm.Activ,
-                Country = vm.Country,
+                RestaurantId = viewmodel.RestaurantId,
+                Name = viewmodel.Name,
+                PostalCode = viewmodel.PostalCode,
+                City = viewmodel.City,
+                StreetHouseNr = viewmodel.StreetHouseNr,
+                Activ = viewmodel.Activ,
+                Country = viewmodel.Country,
                 ContactInfo = new ContactInfo
                 {
-                    PhoneNumber = vm.PhoneNumber,
-                    Email = vm.Email,
+                    PhoneNumber = viewmodel.PhoneNumber,
+                    Email = viewmodel.Email,
                 }
             };
         }
 
-        public RestaurantListViewModel ToListViewModel(Restaurant restaurant)
+        public RestaurantListsListViewModel ToListListViewModel(Restaurant? restaurant)
         {
-            return new RestaurantListViewModel
+            if (restaurant == null)
+                return new RestaurantListsListViewModel();
+
+            return new RestaurantListsListViewModel
             {
                 RestaurantId = restaurant.RestaurantId,
                 Name = restaurant.Name,
@@ -54,9 +62,19 @@ namespace TRSAP09.Logic
             };
         }
 
-        public List<RestaurantListViewModel> ToListViewModels(IEnumerable<Restaurant> restaurants)
+        public RestaurantListViewModel ToListViewModels(IEnumerable<Restaurant>? restaurants)
         {
-            return restaurants.Select(ToListViewModel).ToList();
+            var viewmodel = new RestaurantListViewModel();
+            if (restaurants == null)
+                return viewmodel;
+
+            var list = new List<RestaurantListsListViewModel>();
+            foreach (var item in restaurants)
+            {
+                list.Add(ToListListViewModel(item));
+            }
+            viewmodel.RestaurantsList = list;
+            return viewmodel;
         }
     }
 }

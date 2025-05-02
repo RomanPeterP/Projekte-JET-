@@ -26,12 +26,9 @@ namespace TRSAP09Web.Controlles
         public IActionResult List()
         {
             var response = _restaurantLogic.Data();
-            if (response == null
-                || response.StatusCode == Enums.StatusCode.Error || response.Data == null)
-                return NoContent();
-
-            var model = _mapper.ToListViewModels(response.Data);
-            return View(model);
+            var viewModel = _mapper.ToListViewModels(response.Data);
+            viewModel.Message = response.Message;
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -48,11 +45,12 @@ namespace TRSAP09Web.Controlles
             {
                 var viewModel = _mapper.Map(restaurant);
                 var response = _restaurantLogic.Register(viewModel);
-                if (response != null
-                        && response.StatusCode == Enums.StatusCode.Success)
+                if (response.StatusCode == Enums.StatusCode.Success)
                     return RedirectToAction("List");
+                restaurant.Message = response.Message;
+
             }
-            return View();
+            return View(restaurant);
         }
     }
 }

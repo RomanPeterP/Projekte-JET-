@@ -1,5 +1,5 @@
 ﻿@using TRSAP09.Viewmodels
-@model List<RestaurantListViewModel>
+@model RestaurantListViewModel
 
 <!DOCTYPE html>
 <html>
@@ -59,7 +59,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var item in Model)
+			@foreach (var item in Model.RestaurantsList)
 			{
 				<tr>
 					<td>@item.Name</td>
