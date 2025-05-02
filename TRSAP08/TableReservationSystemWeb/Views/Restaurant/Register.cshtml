@@ -1,0 +1,59 @@
+﻿@model RestaurantFormViewModel
+
+<div class="form-container">
+	<h1>Restaurant eingeben / bearbeiten</h1>
+
+	<form asp-action="Register" method="post">
+		<div class="text-danger">@Model?.Message</div>
+		<div class="form-group">
+			<label asp-for="Name"></label>
+			<input asp-for="Name" type="text" class="form-control" />
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="StreetHouseNr"></label>
+			<input asp-for="StreetHouseNr" type="text" class="form-control" />
+			<span asp-validation-for="StreetHouseNr" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="PostalCode"></label>
+			<input asp-for="PostalCode" type="text" class="form-control" />
+			<span asp-validation-for="PostalCode" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="City"></label>
+			<input asp-for="City" type="text" class="form-control" />
+			<span asp-validation-for="City" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="Country"></label>
+			<input asp-for="Country" type="text" class="form-control" />
+			<span asp-validation-for="Country" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="Email"></label>
+			<input asp-for="Email" type="email" class="form-control" />
+			<span asp-validation-for="Email" class="text-danger"></span>
+		</div>
+
+		<div class="form-group">
+			<label asp-for="PhoneNumber"></label>
+			<input asp-for="PhoneNumber" type="text" class="form-control" />
+			<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+		</div>
+
+		<div class="form-group form-check">
+			<input asp-for="Activ" type="checkbox" class="form-check-input" />
+			<label asp-for="Activ" class="form-check-label"></label>
+		</div>
+
+		<button type="submit" class="btn btn-primary">Speichern</button>
+	</form>
+
+</div>
+
