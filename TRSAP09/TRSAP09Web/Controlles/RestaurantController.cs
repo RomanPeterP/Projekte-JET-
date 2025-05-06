@@ -2,6 +2,8 @@
 using TRSAP09.Models.Interfaces;
 using TRSAP09.Models;
 using TRSAP09.Viewmodels;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace TRSAP09Web.Controlles
 {
@@ -43,14 +45,24 @@ namespace TRSAP09Web.Controlles
         {
             if (ModelState.IsValid)
             {
-                var viewModel = _mapper.Map(restaurant);
-                var response = _restaurantLogic.Register(viewModel);
+                var model = _mapper.Map(restaurant);
+                var response = _restaurantLogic.Register(model);
                 if (response.StatusCode == Enums.StatusCode.Success)
                     return RedirectToAction("List");
                 restaurant.Message = response.Message;
 
             }
             return View(restaurant);
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            if (id <= 0)
+                return BadRequest();
+
+            var response = _restaurantLogic.Delete(id);
+            return RedirectToAction("List");
         }
     }
 }

@@ -4,5 +4,7 @@
     {
         public Response Register(Restaurant restaurnat);
         public Response Data();
+
+        public Response Delete(int id);
     }
 }

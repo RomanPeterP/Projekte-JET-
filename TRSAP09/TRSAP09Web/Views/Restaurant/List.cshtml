@@ -65,11 +65,11 @@
 					<td>@item.AddressSummary</td>
 					<td>@item.Email</td>
 					<td>@item.PhoneNumber</td>
-					<td>@(item.Activ ? "Ja" : "Nein")</td>
+					<td><input type="checkbox" style="pointer-events:none" asp-for="@item.Activ" /></td>
 					<td>
 						<a asp-action="Edit" asp-route-id="@item.RestaurantId">Bearbeiten</a> |
 						<a asp-action="Details" asp-route-id="@item.RestaurantId">Details</a> |
-						<a asp-action="Delete" asp-route-id="@item.RestaurantId">Löschen</a>
+						<a asp-action="Delete" asp-route-id="@item.RestaurantId" onclick="if (!confirm('Are you sure you want to delete?')) { return false; }" asp-controller="Restaurant" asp-action="Delete">Löschen</a>
 					</td>
 				</tr>
 			}

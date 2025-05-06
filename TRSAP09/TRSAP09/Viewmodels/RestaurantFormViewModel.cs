@@ -2,7 +2,7 @@
 
 namespace TRSAP09.Viewmodels
 {
-    public class RestaurantFormViewModel
+    public class RestaurantFormViewModel: RestaurantViewModel
     {
         public int RestaurantId { get; set; }  // Bei "Create" kann man ihn weglassen
 
@@ -42,7 +42,5 @@ namespace TRSAP09.Viewmodels
         [Url(ErrorMessage = "Bitte eine gültige URL eingeben.")]
         [Display(Name = "Webseite")]
         public string? Website { get; set; }
-
-        public string? Message { get; set; }
     }
 }
