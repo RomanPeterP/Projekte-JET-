@@ -4,7 +4,7 @@ using TRSAP11.Models;
 namespace TRSAP11
 {
     public static class Uebungen
-    {  
+    {
         public static void AddRestaurant()
         {
             var restaurantLogic = new RestaurantLogic();
@@ -116,13 +116,12 @@ namespace TRSAP11
             List<Reservation> reservations = new List<Reservation>
             {
                 new VipReservation { Surcharge = 123.99m,  NumberOfGuests = 3, Date = new DateOnly(2025,6,1), Time = new TimeOnly(18,9)},
-                new FamilyReservation { IsHighChairRequired = true, NumberOfGuests = 3, Date = new DateOnly(2025,6,1), Time = new TimeOnly(18,9) }
+                new FamilyReservation { IsHighChairRequired = true, NumberOfGuests = 3, Date = new DateOnly(2025,6,1), Time = new TimeOnly(18,9) },
+                new DefaultReservation { NumberOfGuests = 7, Date = new DateOnly(2025,8,10), Time = new TimeOnly(20,4) }
             };
 
             foreach (Reservation reservation in reservations)
-            {
-                Console.WriteLine($"{reservation.GetTypeDescription()}");
-            }
+                Console.WriteLine(reservation.GetTypeDescription());
 
         }
     }

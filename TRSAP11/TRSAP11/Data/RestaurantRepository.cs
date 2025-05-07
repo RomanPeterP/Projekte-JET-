@@ -13,8 +13,12 @@ namespace TRSAP11.Data
 
         public static void Delete(int id)
         {
-            RestaurantData.RestaurantsList.Remove(RestaurantData.RestaurantsList
-                .Where(r => r.RestaurantId == id).FirstOrDefault());
+            // Hier klassisch (noch ohne LINQ) lösen
+            
+            //RestaurantData.RestaurantsList.Remove(RestaurantData.RestaurantsList
+            //    .Where(r => r.RestaurantId == id).FirstOrDefault());
+
+
         }
 
         public static bool Any
