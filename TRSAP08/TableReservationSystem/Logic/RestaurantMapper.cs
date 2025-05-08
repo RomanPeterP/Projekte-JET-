@@ -50,7 +50,7 @@ namespace TableReservationSystem.Logic
             };
         }
 
-        public RestaurantListViewModel Map(IEnumerable<IRestaurant>? restaurants)
+        public RestaurantListViewModel Map(IEnumerable<IRestaurant>? restaurants, string? message)
         {
             var viewmodel = new RestaurantListViewModel();
             if (restaurants == null)
@@ -62,12 +62,23 @@ namespace TableReservationSystem.Logic
                 list.Add(Map(item));
             }
             viewmodel.RestaurantsList = list;
+            viewmodel.Message = message;
             return viewmodel;
         }
 
         public RestaurantViewModel Map(IRestaurant? restaurant)
         {
-           
+            if (restaurant == null)
+                return new RestaurantViewModel();
+
+            return new RestaurantViewModel
+            {
+                RestaurantId = restaurant.RestaurantId,
+                Name = restaurant.Name,
+                AddressSummary = $"{restaurant.StreetHouseNr}, {restaurant.CountryCode}-{restaurant.PostalCode} {restaurant.City}",
+                Email = restaurant.ContactInfo?.Email,
+                PhoneNumber = restaurant.ContactInfo?.PhoneNumber
+            };
         }
     }
 }

@@ -30,6 +30,16 @@ namespace TableReservationSystemWeb.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public IActionResult List()
+        {
+            var listResponse = _logic.Data();
+            var viewmodel = _mapper.Map(listResponse.Data, listResponse.Message); 
+            return View(viewmodel);
+        }
+
+
         [HttpPost]
         public IActionResult Register(RestaurantFormViewModel viewmodel)
         {
