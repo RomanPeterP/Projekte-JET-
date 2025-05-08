@@ -2,7 +2,7 @@
 
 namespace TableReservationSystem.Viewmodels
 {
-    public class RestaurantFormViewModel
+    public class RestaurantFormViewModel: RestaurantBaseViewModel
     {
         public int RestaurantId { get; set; }  // Bei "Create" kann man ihn weglassen
 
@@ -44,6 +44,5 @@ namespace TableReservationSystem.Viewmodels
         [MaxLength(50)]
         [Display(Name = "E-Mail-Adresse")]
         public string? Email { get; set; }
-        public string? Message { get; set; }
     }
 }
