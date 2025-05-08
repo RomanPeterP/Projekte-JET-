@@ -1,0 +1,36 @@
+﻿@model RestaurantListViewModel
+
+<h1>Restaurant-Liste</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Adresse</th>
+			<th>Email</th>
+			<th>Telefon</th>
+			@* <th>Aktiv</th> *@
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.RestaurantsList)
+		{
+			<tr>
+				<td>@item.Name</td>
+				<td>@item.AddressSummary</td>
+				<td>@item.Email</td>
+				<td>@item.PhoneNumber</td>
+@* 				<td><input type="checkbox" style="pointer-events:none" asp-for="@item.Activ" /></td> *@
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.RestaurantId">Bearbeiten</a> |
+					<a asp-action="Details" asp-route-id="@item.RestaurantId">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.RestaurantId" onclick="if (!confirm('Are you sure you want to delete?')) { return false; }" asp-controller="Restaurant" asp-action="Delete">Löschen</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<div>
+	<br />
+	<a asp-action="Register" asp-controller="Restaurant">Neues Restaurant erfassen</a>
+</div>
