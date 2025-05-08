@@ -1,4 +1,5 @@
-﻿using TableReservationSystem.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TableReservationSystem.Models;
 using TableReservationSystem.Models.Interfaces;
 
 namespace TableReservationSystem.Data
@@ -33,7 +34,7 @@ namespace TableReservationSystem.Data
 
         public IEnumerable<IRestaurant> Select
         {
-            get { return _context.Restaurant; }
+            get { return _context.Restaurant.Include(c=> c.ContactInfo); }
         }
     }
 }
