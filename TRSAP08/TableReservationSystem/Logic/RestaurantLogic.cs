@@ -15,24 +15,24 @@ namespace TableReservationSystem.Logic
             _repository = repository;
         }
 
-        public IResponse Register(Restaurant restaurnat)
+        public IResponse Register(Restaurant restaurant)
         {
             try
             {
                 // Grundprüfung
-                if (!IsBasicallyValid(restaurnat, out StringBuilder stringBuilder))
+                if (!IsBasicallyValid(restaurant, out StringBuilder stringBuilder))
                 {
                     _response.Message += stringBuilder.ToString();
                     return _response;
                 }
 
                 // Prüfung auf Duplikatte
-                if (IsExists(restaurnat))
+                if (IsExists(restaurant))
                 {
-                    _response.Message = "Es exitiert bereits ein Restaurant unter dieser Adresse. Anlage fehlgeschlagen.";
+                    _response.Message = "Es existiert bereits ein Restaurant unter dieser Adresse. Anlage fehlgeschlagen.";
                     return _response;
                 }
-                _repository.Insert(restaurnat);
+                _repository.Insert(restaurant);
                 _response.StatusCode = Enums.StatusCode.Success;
             }
             catch (Exception ex)
@@ -56,12 +56,12 @@ namespace TableReservationSystem.Logic
             return _response;
         }
 
-        private bool IsExists(IRestaurant restaurnat)
+        private bool IsExists(IRestaurant restaurant)
         {
             if (_repository.Any)
             {
-                var restaurantString = (restaurnat.Name + restaurnat.PostalCode + restaurnat.City
-                    + restaurnat.StreetHouseNr + restaurnat.CountryCode)
+                var restaurantString = (restaurant.Name + restaurant.PostalCode + restaurant.City
+                    + restaurant.StreetHouseNr + restaurant.CountryCode)
                     .Trim().ToUpper();
 
                 foreach (var item in _repository.Select)
@@ -75,42 +75,43 @@ namespace TableReservationSystem.Logic
             return false;
         }
 
-        private bool IsBasicallyValid(IRestaurant restaurnat, out StringBuilder stringBuilder)
+        private bool IsBasicallyValid(IRestaurant restaurant, out StringBuilder stringBuilder)
         {
             stringBuilder = new StringBuilder();
 
-            if (restaurnat == null)
+            if (restaurant == null)
             {
-                stringBuilder.AppendLine($"{restaurnat}-Objekt ist nicht gesetzt");
+                stringBuilder.AppendLine($"{restaurant}-Objekt ist nicht gesetzt");
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(restaurnat.Name))
-                stringBuilder.AppendLine($"{nameof(restaurnat.Name)} fehlt.");
+            if (string.IsNullOrWhiteSpace(restaurant.Name))
+                stringBuilder.AppendLine($"{nameof(restaurant.Name)} fehlt.");
 
-            if (string.IsNullOrWhiteSpace(restaurnat.PostalCode))
-                stringBuilder.AppendLine($"{nameof(restaurnat.PostalCode)} fehlt.");
+            if (string.IsNullOrWhiteSpace(restaurant.PostalCode))
+                stringBuilder.AppendLine($"{nameof(restaurant.PostalCode)} fehlt.");
 
-            if (string.IsNullOrWhiteSpace(restaurnat.City))
-                stringBuilder.AppendLine($"{nameof(restaurnat.City)} fehlt.");
+            if (string.IsNullOrWhiteSpace(restaurant.City))
+                stringBuilder.AppendLine($"{nameof(restaurant.City)} fehlt.");
 
-            if (string.IsNullOrWhiteSpace(restaurnat.CountryCode))
-                stringBuilder.AppendLine($"{nameof(restaurnat.CountryCode)} fehlt.");
+            if (string.IsNullOrWhiteSpace(restaurant.CountryCode))
+                stringBuilder.AppendLine($"{nameof(restaurant.CountryCode)} fehlt.");
 
-            if (string.IsNullOrWhiteSpace(restaurnat.StreetHouseNr))
-                stringBuilder.AppendLine($"{nameof(restaurnat.StreetHouseNr)} fehlt.");
+            if (string.IsNullOrWhiteSpace(restaurant.StreetHouseNr))
+                stringBuilder.AppendLine($"{nameof(restaurant.StreetHouseNr)} fehlt.");
 
-            if (restaurnat.ContactInfo == null)
+            if (restaurant.ContactInfo == null)
             {
-                stringBuilder.AppendLine($"{nameof(restaurnat.ContactInfo)} fehlt.");
+                stringBuilder.AppendLine($"{nameof(restaurant.ContactInfo)} fehlt.");
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(restaurnat.ContactInfo.Email))
-                stringBuilder.AppendLine("Email fehlt.");
+            if (string.IsNullOrWhiteSpace(restaurant.ContactInfo.Email))
+                stringBuilder.AppendLine($"{nameof(restaurant.ContactInfo.Email)} fehlt.");
 
-            if (string.IsNullOrWhiteSpace(restaurnat.ContactInfo.PhoneNumber))
-                stringBuilder.AppendLine("PhoneNumber fehlt.");
+            if (string.IsNullOrWhiteSpace(restaurant.ContactInfo.PhoneNumber))
+                stringBuilder.AppendLine($"{nameof(restaurant.ContactInfo.PhoneNumber)} fehlt.");
+
 
             return (stringBuilder.Length == 0);
         }
