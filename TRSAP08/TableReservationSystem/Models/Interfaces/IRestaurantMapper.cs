@@ -6,5 +6,7 @@ namespace TableReservationSystem.Models.Interfaces
     {
         RestaurantFormViewModel Map(Restaurant? model, string? message);
         Restaurant Map(RestaurantFormViewModel? viewmodel);
+        RestaurantListViewModel Map(IEnumerable<IRestaurant>? restaurants);
+        RestaurantViewModel Map(IRestaurant? restaurant);
     }
 }

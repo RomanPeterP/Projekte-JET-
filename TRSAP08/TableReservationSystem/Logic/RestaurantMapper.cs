@@ -32,7 +32,7 @@ namespace TableReservationSystem.Logic
         {
             if (viewmodel == null)
                 return new Restaurant();
-            
+
             return new Restaurant
             {
                 RestaurantId = viewmodel.RestaurantId,
@@ -48,6 +48,26 @@ namespace TableReservationSystem.Logic
                     Email = viewmodel.Email ?? string.Empty,
                 }
             };
+        }
+
+        public RestaurantListViewModel Map(IEnumerable<IRestaurant>? restaurants)
+        {
+            var viewmodel = new RestaurantListViewModel();
+            if (restaurants == null)
+                return viewmodel;
+
+            var list = new List<RestaurantViewModel>();
+            foreach (var item in restaurants)
+            {
+                list.Add(Map(item));
+            }
+            viewmodel.RestaurantsList = list;
+            return viewmodel;
+        }
+
+        public RestaurantViewModel Map(IRestaurant? restaurant)
+        {
+           
         }
     }
 }
