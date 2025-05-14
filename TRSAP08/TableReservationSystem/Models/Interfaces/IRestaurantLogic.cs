@@ -5,5 +5,6 @@ namespace TableReservationSystem.Models.Interfaces
     {
         public IResponse Register(Restaurant restaurant);
         public IResponse Data();
+        public IResponse Delete(Restaurant restaurant);
     }
 }

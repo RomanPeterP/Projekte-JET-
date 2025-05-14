@@ -13,7 +13,6 @@ namespace TableReservationSystem
     {
         static void Main(string[] args)
         {
-
             // Dependency Injection setzen
 
             using IHost host = Host.CreateDefaultBuilder(args)
@@ -21,7 +20,7 @@ namespace TableReservationSystem
                 {
                     services.AddDbContext<TableReservationSystemContext>(options =>
                         options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")));
-                    
+
                     services.AddScoped<TableReservationSystemContext, TableReservationSystemContext>();
                     services.AddScoped<IRestaurant, Restaurant>();
                     services.AddScoped<IRestaurantLogic, RestaurantLogic>();
@@ -34,10 +33,16 @@ namespace TableReservationSystem
             // Dependency Injection  verwenden
             using var scope = host.Services.CreateScope();
             var serviceProvider = scope.ServiceProvider;
-
             var logic = serviceProvider.GetRequiredService<IRestaurantLogic>();
 
+            
+            AddRestaurant(logic, true);
+            ListAllRestaurants(logic);
 
+        }
+
+        private static void AddRestaurant(IRestaurantLogic logic, bool withDelete)
+        {
             var restaurant = new Restaurant()
             {
                 //Name = "Musil",
@@ -55,6 +60,21 @@ namespace TableReservationSystem
             };
 
 
+            var tableNummer = Guid.NewGuid().ToString().Substring(0, 10);
+            restaurant.Tables.Add(new Table() { Activ = true, TableNumber = tableNummer, NumberOfSeats = 4 });
+
+            var reservation = new Reservation()
+            {
+                TableNumber = tableNummer,
+                ReservationTimeId = 1,
+                NumberOfGuests = 4,
+                Name = "Roman",
+                Date = new DateOnly(2025, 12, 12),
+                ContactInfo = new ContactInfo() { Email = "romanpoc@at.at", PhoneNumber = "3245324234" }
+            };
+            restaurant.Reservations.Add(reservation);
+
+
             var response = logic.Register(restaurant);
 
             if (response.StatusCode == Enums.StatusCode.Success)
@@ -64,8 +84,15 @@ namespace TableReservationSystem
 
             Console.WriteLine("---------------------------------------------------");
 
+            // DELETE
+            if (withDelete)
+                response = logic.Delete(restaurant);
+        }
+
+        private static void ListAllRestaurants(IRestaurantLogic logic)
+        {
             // Daten von allen registrierten Restaurants abrufen
-            response = logic.Data();
+            var response = logic.Data();
             if (response.StatusCode == Enums.StatusCode.Success)
             {
                 var data = response.Data;

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System.Xml;
 using TableReservationSystem.Models;
 using TableReservationSystem.Models.Interfaces;
 
@@ -21,10 +23,18 @@ namespace TableReservationSystem.Data
 
         public void Delete(int id)
         {
+            // Aufruf transaktionsgeschützrter gesp. Prozedur
+            _context.Database.ExecuteSqlRaw("EXEC DeleteRestaurant @RestaurantId", new SqlParameter("@RestaurantId", id));
 
-            // TODO: Hier muss man die ganze Kette vorher löschen!
-            _context.Restaurant.Remove(_context.Restaurant
-                .Where(r => r.RestaurantId == id).FirstOrDefault());
+
+            // Vorgangsweise mit EFC (weniger performant) wäre: 
+            var contactInfoId = _context.Reservation.FirstOrDefault(r => r.RestaurantId == id).ContactInfoId;
+            _context.Reservation.Remove(_context.Reservation.FirstOrDefault(r => r.RestaurantId == id));
+            _context.ContactInfo.Remove(_context.ContactInfo.FirstOrDefault(ci => ci.ContactInfoId == contactInfoId));
+            _context.Table.Remove(_context.Table.FirstOrDefault(t => t.RestaurantId == id));
+            _context.Restaurant.Remove(_context.Restaurant.FirstOrDefault(r => r.RestaurantId == id));
+
+            _context.SaveChanges();
         }
 
         public bool Any
@@ -34,7 +44,7 @@ namespace TableReservationSystem.Data
 
         public IEnumerable<IRestaurant> Select
         {
-            get { return _context.Restaurant.Include(c=> c.ContactInfo); }
+            get { return _context.Restaurant.Include(c => c.ContactInfo); }
         }
     }
 }

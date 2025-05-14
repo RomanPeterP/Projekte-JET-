@@ -56,6 +56,21 @@ namespace TableReservationSystem.Logic
             return _response;
         }
 
+
+        public IResponse Delete(Restaurant restaurant)
+        {
+            try
+            {
+                _repository.Delete(restaurant.RestaurantId);
+                _response.StatusCode = Enums.StatusCode.Success;
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+
         private bool IsExists(IRestaurant restaurant)
         {
             if (_repository.Any)

@@ -9,7 +9,9 @@ namespace TRSAP11
 
             // Uebungen.AddRestaurant();
             
-            Uebungen.Polymorphie();
+            // Uebungen.Polymorphie();
+
+            Uebungen.Generics();
         }
     }
 }

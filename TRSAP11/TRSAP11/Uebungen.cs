@@ -1,4 +1,5 @@
-﻿using TRSAP11.Logic;
+﻿using System.Collections;
+using TRSAP11.Logic;
 using TRSAP11.Models;
 
 namespace TRSAP11
@@ -115,13 +116,29 @@ namespace TRSAP11
 
             List<Reservation> reservations = new List<Reservation>
             {
-                new VipReservation { Surcharge = 123.99m,  NumberOfGuests = 3, Date = new DateOnly(2025,6,1), Time = new TimeOnly(18,9)},
-                new FamilyReservation { IsHighChairRequired = true, NumberOfGuests = 3, Date = new DateOnly(2025,6,1), Time = new TimeOnly(18,9) },
-                new DefaultReservation { NumberOfGuests = 7, Date = new DateOnly(2025,8,10), Time = new TimeOnly(20,4) }
+                new VipReservation { Surcharge = 123.99m,  NumberOfGuests = 3, Date = new DateOnly(2025, 6, 1), Time = new TimeOnly(18, 9)},
+                new FamilyReservation { IsHighChairRequired = true, NumberOfGuests = 3, Date = new DateOnly(2025, 6, 1), Time = new TimeOnly(18, 9) },
+                new DefaultReservation { NumberOfGuests = 7, Date = new DateOnly(2025, 8, 10), Time = new TimeOnly(20, 4) }
             };
 
             foreach (Reservation reservation in reservations)
                 Console.WriteLine(reservation.GetTypeDescription());
+
+        }
+
+        public static void Generics()
+        {
+            var tableList = new ManagementList<Table>();
+            tableList.Add(new Table { TableNumber = "A34", NumberOfSeats = 4 });
+            tableList.Add(new Table { TableNumber = "S12", NumberOfSeats = 2 });
+            tableList.Display();
+
+            var guestList = new ManagementList<Reservation>();
+            
+            guestList.Add(new DefaultReservation { Name = "Nikolaus", Date = new DateOnly(2025, 12, 12), Time = new TimeOnly(19, 15) });
+            guestList.Add(new VipReservation { Name = "Erwin", Date = new DateOnly(2025, 6, 9), Time = new TimeOnly(17, 30) });
+            
+            guestList.Display();
 
         }
     }
