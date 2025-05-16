@@ -1,6 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using System.Xml;
+﻿using Microsoft.EntityFrameworkCore;
 using TableReservationSystem.Models;
 using TableReservationSystem.Models.Interfaces;
 
@@ -24,17 +22,20 @@ namespace TableReservationSystem.Data
         public void Delete(int id)
         {
             // Aufruf transaktionsgeschützrter gesp. Prozedur
-            _context.Database.ExecuteSqlRaw("EXEC DeleteRestaurant @RestaurantId", new SqlParameter("@RestaurantId", id));
+            //_context.Database.ExecuteSqlRaw("EXEC DeleteRestaurant @RestaurantId", new SqlParameter("@RestaurantId", id));
 
 
             // Vorgangsweise mit EFC (weniger performant) wäre: 
-            var contactInfoId = _context.Reservation.FirstOrDefault(r => r.RestaurantId == id).ContactInfoId;
-            _context.Reservation.Remove(_context.Reservation.FirstOrDefault(r => r.RestaurantId == id));
-            _context.ContactInfo.Remove(_context.ContactInfo.FirstOrDefault(ci => ci.ContactInfoId == contactInfoId));
-            _context.Table.Remove(_context.Table.FirstOrDefault(t => t.RestaurantId == id));
-            _context.Restaurant.Remove(_context.Restaurant.FirstOrDefault(r => r.RestaurantId == id));
 
-            _context.SaveChanges();
+            //var contactInfos = _context.Restaurant.Where(r=> r.RestaurantId == id).Select(r=> r.ContactInfo).ToList();
+            //contactInfos.AddRange(_context.Reservation.Where(r => r.RestaurantId == id).Select(s => s.ContactInfo).ToList());
+
+            //_context.Reservation.RemoveRange(_context.Reservation.Where(r => r.RestaurantId == id));
+            //_context.Table.RemoveRange(_context.Table.Where(t => t.RestaurantId == id));
+            //_context.Restaurant.RemoveRange(_context.Restaurant.Where(r => r.RestaurantId == id));
+            //_context.ContactInfo.RemoveRange(contactInfos);
+
+            //_context.SaveChanges();
         }
 
         public bool Any
@@ -44,7 +45,7 @@ namespace TableReservationSystem.Data
 
         public IEnumerable<IRestaurant> Select
         {
-            get { return _context.Restaurant.Include(c => c.ContactInfo); }
+            get { return _context.Restaurant.AsNoTracking().Include(c => c.ContactInfo); }
         }
     }
 }
