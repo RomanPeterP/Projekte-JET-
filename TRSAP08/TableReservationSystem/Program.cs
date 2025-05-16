@@ -37,7 +37,7 @@ namespace TableReservationSystem
 
             
             AddRestaurant(logic, true);
-            ListAllRestaurants(logic);
+            //ListAllRestaurants(logic);
 
         }
 
@@ -49,7 +49,7 @@ namespace TableReservationSystem
                 Name = ("Musil" + Guid.NewGuid().ToString()).Substring(0, 30), // zum Testen: Eindeutigkeit erzwingen
                 ContactInfo = new ContactInfo
                 {
-                    Email = "musil@musil.at",
+                    Email = "musilX@musil.at",
                     PhoneNumber = "1234567890"
                 },
                 PostalCode = "1140",
@@ -70,9 +70,19 @@ namespace TableReservationSystem
                 NumberOfGuests = 4,
                 Name = "Roman",
                 Date = new DateOnly(2025, 12, 12),
-                ContactInfo = new ContactInfo() { Email = "romanpoc@at.at", PhoneNumber = "3245324234" }
+                ContactInfo = new ContactInfo() { Email = "romanpocX@at.at", PhoneNumber = "3245324234" }
             };
             restaurant.Reservations.Add(reservation);
+            var reservation2 = new Reservation()
+            {
+                TableNumber = tableNummer,
+                ReservationTimeId = 1,
+                NumberOfGuests = 4,
+                Name = "Anna",
+                Date = new DateOnly(2025, 12, 20),
+                ContactInfo = new ContactInfo() { Email = "romandpocX@at.at", PhoneNumber = "3245324234" }
+            };
+            restaurant.Reservations.Add(reservation2);
 
 
             var response = logic.Register(restaurant);
