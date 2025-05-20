@@ -1,37 +1,50 @@
-﻿using System.Text.Json;
+﻿using Microsoft.Data.SqlClient;
+using System.Text.Json;
 using TRSAP09.Models;
 
 namespace TRSAP09.Data
 {
     public static class RestaurantRepository
     {
+        static string connectionString = "Data Source=DESKTOP-KCGE85K\\SQLEXPRESS;Initial Catalog=TRSAP09;Integrated Security=True;Encrypt=False";
+
         public static void Insert(Restaurant restaurant)
         {
-            RestaurantData.RestaurantsList.Add(restaurant);
 
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                string query = "EXEC[dbo].[InsertUpdateRestaurantWithContactInfo] \r\n   @RestaurantId\r\n  ,@Name\r\n  ,@PostalCode\r\n  ,@City\r\n  ,@StreetHouseNr\r\n  ,@Activ\r\n  ,@Country\r\n  ,@Email\r\n  ,@PhoneNumber";
+                SqlCommand sqlCommand = new SqlCommand(query, sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@RestaurantId", restaurant.RestaurantId);
+                sqlCommand.Parameters.AddWithValue("@Name", restaurant.Name);
+                sqlCommand.Parameters.AddWithValue("@PostalCode", restaurant.PostalCode);
+                sqlCommand.Parameters.AddWithValue("@City", restaurant.City);
+                sqlCommand.Parameters.AddWithValue("@StreetHouseNr", restaurant.StreetHouseNr);
+                sqlCommand.Parameters.AddWithValue("@Activ", restaurant.Activ);
+                sqlCommand.Parameters.AddWithValue("@Country", restaurant.Country);
+                sqlCommand.Parameters.AddWithValue("@Email", restaurant.ContactInfo.Email);
+                sqlCommand.Parameters.AddWithValue("@PhoneNumber", restaurant.ContactInfo.PhoneNumber);
+
+                sqlConnection.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
         }
 
-        private static void CreateJson()
-        {
-            var json = JsonSerializer.Serialize(RestaurantData.RestaurantsList);
-            File.WriteAllText(RestaurantData.Path, json);
-        }
 
         public static void Delete(int id)
         {
-            RestaurantData.RestaurantsList.Remove(RestaurantData.RestaurantsList
-                .Where(r => r.RestaurantId == id).FirstOrDefault());
-            CreateJson();
+
         }
 
         public static bool Any
         {
-            get { return RestaurantData.RestaurantsList.Any(); }
+            get { return false; }
         }
 
         public static List<Restaurant> Select
         {
-            get { return RestaurantData.RestaurantsList; }
+            get { return new List<Restaurant>(); }
         }
     }
 }

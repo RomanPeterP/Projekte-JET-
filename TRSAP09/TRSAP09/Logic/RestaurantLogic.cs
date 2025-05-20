@@ -27,7 +27,6 @@ namespace TRSAP09.Logic
                 return response;
             }
 
-            restaurnat.RestaurantId = RestaurantRepository.Select.Count + 1;
             RestaurantRepository.Insert(restaurnat);
             response.StatusCode = Enums.StatusCode.Success;
             return response;
