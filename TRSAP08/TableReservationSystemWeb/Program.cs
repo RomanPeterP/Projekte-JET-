@@ -14,6 +14,7 @@ namespace TableReservationSystemWeb
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IRestaurantLogic, RestaurantLogic>();
+            builder.Services.AddScoped<IMiscLogic, MiscLogic>();
             builder.Services.AddScoped<IRestaurantMapper, RestaurantMapper>();
             builder.Services.AddDbContext<TableReservationSystemContext>(options =>
                 options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")));

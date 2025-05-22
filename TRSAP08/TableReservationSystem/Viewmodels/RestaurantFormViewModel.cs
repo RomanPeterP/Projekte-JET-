@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace TableReservationSystem.Viewmodels
 {
@@ -44,5 +45,6 @@ namespace TableReservationSystem.Viewmodels
         [MaxLength(50)]
         [Display(Name = "E-Mail-Adresse")]
         public string? Email { get; set; }
+        public IEnumerable<SelectListItem>? CountryList { get; set; }
     }
 }

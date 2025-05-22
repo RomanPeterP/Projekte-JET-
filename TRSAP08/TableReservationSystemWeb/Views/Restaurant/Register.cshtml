@@ -31,7 +31,7 @@
 
 		<div class="form-group">
 			<label asp-for="Country"></label>
-			<input asp-for="Country" type="text" class="form-control" />
+			<select asp-for="Country" asp-items="Model?.CountryList" class="form-control"></select>
 			<span asp-validation-for="Country" class="text-danger"></span>
 		</div>
 
