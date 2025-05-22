@@ -24,7 +24,7 @@ namespace TableReservationSystemTests
                 Console.WriteLine($"- {res.Name} bei {res.Restaurant?.Name}");
 
             // 3. Neue Reservierung mit erstem Restaurant, Zeit und Kontakt aus DB
-            Console.WriteLine("\n3. Neue Reservierung:");
+            Console.WriteLine("3. Neue Reservierung:");
             var firstRestaurant = context.Restaurant.FirstOrDefault();
             var firstTime = context.ReservationTime.FirstOrDefault();
             var firstContact = context.ContactInfo.FirstOrDefault();
@@ -91,7 +91,7 @@ namespace TableReservationSystemTests
             context.SaveChanges();
 
             // 9. Restaurant ändern
-            Console.WriteLine("\n9. Restaurant ändern:");
+            Console.WriteLine("9. Restaurant ändern:");
             var resto = context.Restaurant.FirstOrDefault(r => r.Name == "Tasty Time");
             if (resto != null)
             {
@@ -128,7 +128,7 @@ namespace TableReservationSystemTests
 
 
             // 14. ReservationStatus ändern
-            Console.WriteLine("\n14. Status einer Reservierung ändern:");
+            Console.WriteLine("14. Status einer Reservierung ändern:");
             var resStatus = context.Reservation.FirstOrDefault();
             if (resStatus != null)
             {
@@ -206,7 +206,7 @@ namespace TableReservationSystemTests
             }
 
             // 21. Neuem Restaurant einen Tisch hinzufügen
-            Console.WriteLine("\n10. Tisch zu Restaurant hinzufügen:");
+            Console.WriteLine("21. Tisch zu Restaurant hinzufügen:");
             var irgendeinRestaurant = context.Restaurant.FirstOrDefault();
             if (irgendeinRestaurant != null)
             {
