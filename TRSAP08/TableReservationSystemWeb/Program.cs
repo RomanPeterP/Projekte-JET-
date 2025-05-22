@@ -19,9 +19,10 @@ namespace TableReservationSystemWeb
                 options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")));
             builder.Services.AddScoped<TableReservationSystemContext, TableReservationSystemContext>();
             builder.Services.AddScoped<IRestaurant, Restaurant>();
-            builder.Services.AddScoped<IResponse, Response>();
+            builder.Services.AddScoped<IResponse<IRestaurant>, Response<IRestaurant>>();
+            builder.Services.AddScoped<IResponse<Country>, Response<Country>>();
             builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
-
+            builder.Services.AddScoped<IMiscRepository, MiscRepository>();
 
             var app = builder.Build();
 

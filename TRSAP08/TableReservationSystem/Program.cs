@@ -24,8 +24,10 @@ namespace TableReservationSystem
                     services.AddScoped<TableReservationSystemContext, TableReservationSystemContext>();
                     services.AddScoped<IRestaurant, Restaurant>();
                     services.AddScoped<IRestaurantLogic, RestaurantLogic>();
-                    services.AddScoped<IResponse, Response>();
+                    services.AddScoped<IResponse<IRestaurant>, Response<IRestaurant>>();
+                    services.AddScoped<IResponse<Country>, Response<Country>>();
                     services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+                    services.AddScoped<IMiscRepository, MiscRepository>();
                 })
                 .Build();
 

@@ -3,8 +3,8 @@ namespace TableReservationSystem.Models.Interfaces
 {
     public interface IRestaurantLogic
     {
-        public IResponse Register(Restaurant restaurant);
-        public IResponse Data();
-        public IResponse Delete(Restaurant restaurant);
+        public IResponse<IRestaurant> Register(Restaurant restaurant);
+        public IResponse<IRestaurant> Data();
+        public IResponse<IRestaurant> Delete(Restaurant restaurant);
     }
 }

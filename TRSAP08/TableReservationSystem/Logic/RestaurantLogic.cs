@@ -6,16 +6,16 @@ namespace TableReservationSystem.Logic
 {
     public class RestaurantLogic : IRestaurantLogic
     {
-        private readonly IResponse _response;
+        private readonly IResponse<IRestaurant> _response;
         private readonly IRestaurantRepository _repository;
 
-        public RestaurantLogic(IRestaurantRepository repository, IResponse response)
+        public RestaurantLogic(IRestaurantRepository repository, IResponse<IRestaurant> response)
         {
             _response = response;
             _repository = repository;
         }
 
-        public IResponse Register(Restaurant restaurant)
+        public IResponse<IRestaurant> Register(Restaurant restaurant)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace TableReservationSystem.Logic
             return _response;
         }
 
-        public IResponse Data()
+        public IResponse<IRestaurant> Data()
         {
             try
             {
@@ -57,7 +57,7 @@ namespace TableReservationSystem.Logic
         }
 
 
-        public IResponse Delete(Restaurant restaurant)
+        public IResponse<IRestaurant> Delete(Restaurant restaurant)
         {
             try
             {
@@ -130,6 +130,5 @@ namespace TableReservationSystem.Logic
 
             return (stringBuilder.Length == 0);
         }
-
     }
 }
