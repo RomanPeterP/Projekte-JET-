@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using System.Text.Json;
 using TRSAP09.Models;
 
 namespace TRSAP09.Data
@@ -37,14 +36,51 @@ namespace TRSAP09.Data
 
         }
 
-        public static bool Any
-        {
-            get { return false; }
-        }
-
         public static List<Restaurant> Select
         {
-            get { return new List<Restaurant>(); }
+            get
+            {
+                var restaurantList = new List<Restaurant>();
+                using var sqlConnection = new SqlConnection(connectionString);
+                string query = @"SELECT [RestaurantId]
+                              ,r.[Name]
+                              ,r.[PostalCode]
+                              ,r.[City]
+                              ,r.[StreetHouseNr]
+                              ,r.[Activ]
+                              ,r.[Country]
+	                          ,ci.[Email]
+	                          ,ci.[PhoneNumber]
+                        FROM [dbo].[Restaurant] r 
+                        LEFT JOIN [dbo].[ContactInfo] ci ON r.ContactInfoId = ci.ContactInfoId";
+                var sqlCommand = new SqlCommand(query, sqlConnection);
+                
+                sqlConnection.Open();
+                var sqlDataReader = sqlCommand.ExecuteReader();
+                if (sqlDataReader.HasRows)
+                {
+                    while (sqlDataReader.Read())
+                    {
+                        var restaurant = new Restaurant()
+                        {
+                            RestaurantId = sqlDataReader.GetInt32(0),
+                            Name = sqlDataReader.GetString(1),
+                            PostalCode = sqlDataReader.GetString(2),
+                            City = sqlDataReader.GetString(3),
+                            StreetHouseNr = sqlDataReader.GetString(4),
+                            Activ = sqlDataReader.GetBoolean(5),
+                            Country = sqlDataReader.GetString(7)
+                        };
+                        restaurant.ContactInfo = new ContactInfo
+                        {
+                            Email = sqlDataReader.GetString(7),
+                            PhoneNumber = sqlDataReader.GetString(8),
+                        };
+                        restaurantList.Add(restaurant);
+                    }
+                }
+                return restaurantList;
+            }
         }
     }
 }

@@ -64,20 +64,19 @@ namespace TRSAP09.Logic
 
         private bool IsExists(Restaurant restaurnat)
         {
-            if (RestaurantRepository.Any)
-            {
-                var restaurantString = (restaurnat.Name + restaurnat.PostalCode + restaurnat.City
-                    + restaurnat.StreetHouseNr + restaurnat.Country)
-                    .Trim().ToUpper();
 
-                foreach (var item in RestaurantRepository.Select)
-                {
-                    var restaurantStringCurrent = (item.Name + item.PostalCode + item.City + item.StreetHouseNr + item.Country)
-                        .Trim().ToUpper();
-                    if (restaurantString == restaurantStringCurrent)
-                        return true;
-                }
+            var restaurantString = (restaurnat.Name + restaurnat.PostalCode + restaurnat.City
+                + restaurnat.StreetHouseNr + restaurnat.Country)
+                .Trim().ToUpper();
+
+            foreach (var item in RestaurantRepository.Select)
+            {
+                var restaurantStringCurrent = (item.Name + item.PostalCode + item.City + item.StreetHouseNr + item.Country)
+                    .Trim().ToUpper();
+                if (restaurantString == restaurantStringCurrent)
+                    return true;
             }
+
             return false;
         }
 
