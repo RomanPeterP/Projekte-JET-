@@ -31,7 +31,7 @@ namespace TRSAP09.Logic
                 return new Restaurant();
             return new Restaurant
             {
-                RestaurantId = viewmodel.RestaurantId,
+                RestaurantId = viewmodel.RestaurantId.HasValue ? viewmodel.RestaurantId.Value: 0,
                 Name = viewmodel.Name,
                 PostalCode = viewmodel.PostalCode,
                 City = viewmodel.City,

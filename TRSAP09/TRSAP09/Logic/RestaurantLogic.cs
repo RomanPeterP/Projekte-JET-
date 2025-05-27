@@ -21,13 +21,13 @@ namespace TRSAP09.Logic
             }
 
             // Prüfung auf Duplikatte
-            if (IsExists(restaurnat))
+            if (restaurnat.RestaurantId == 0 && IsExists(restaurnat))
             {
                 response.Message = "Es exitiert bereits ein Restaurant unter dieser Adresse. Anlage fehlgeschlagen.";
                 return response;
             }
 
-            RestaurantRepository.Insert(restaurnat);
+            RestaurantRepository.InsertUpdate(restaurnat);
             response.StatusCode = Enums.StatusCode.Success;
             return response;
         }
@@ -53,6 +53,21 @@ namespace TRSAP09.Logic
             try
             {
                 RestaurantRepository.Delete(id);
+                response.StatusCode = Enums.StatusCode.Success;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public Response SelectDetails(int id)
+        {
+            var response = new Response(Enums.StatusCode.Error);
+            try
+            {
+                response.Data = RestaurantRepository.SelectDetails(id);
                 response.StatusCode = Enums.StatusCode.Success;
             }
             catch (Exception ex)

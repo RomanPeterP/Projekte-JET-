@@ -4,7 +4,7 @@ namespace TRSAP09.Viewmodels
 {
     public class RestaurantFormViewModel: RestaurantViewModel
     {
-        public int RestaurantId { get; set; }  // Bei "Create" kann man ihn weglassen
+        public int? RestaurantId { get; set; }  // Bei "Create" kann man ihn weglassen
 
         [Required(ErrorMessage = "Der Name ist erforderlich.")]
         [Display(Name = "Name des Restaurants")]
@@ -27,6 +27,7 @@ namespace TRSAP09.Viewmodels
         public bool Activ { get; set; }
 
         [Required(ErrorMessage = "Das Land ist erforderlich.")]
+        [MaxLength(2)]
         [Display(Name = "Land")]
         public string Country { get; set; } = null!;
 

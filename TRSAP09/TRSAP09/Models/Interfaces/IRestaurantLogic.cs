@@ -6,5 +6,7 @@
         public Response Data();
 
         public Response Delete(int id);
+
+        public Response SelectDetails(int id);
     }
 }

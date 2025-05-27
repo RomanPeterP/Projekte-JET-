@@ -5,7 +5,7 @@ namespace TRSAP09.Models
 {
     public class ContactInfo
     {
-        public int Id { get; }
+        public int Id { get; set; }
         [MaxLength(128)]
         public string Email { get; set; } = null!;
         [MaxLength(20)]

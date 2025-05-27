@@ -69,6 +69,7 @@
         <h1>Restaurant eingeben / bearbeiten</h1>
 
         <form asp-action="Register" method="post">
+            <input type="hidden" asp-for="RestaurantId" />
             <div class="text-danger">@Model?.Message</div>
             <div class="form-group">
                 <label asp-for="Name"></label>

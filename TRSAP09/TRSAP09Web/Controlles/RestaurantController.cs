@@ -39,6 +39,14 @@ namespace TRSAP09Web.Controlles
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Edit([FromRoute] int id)
+        {
+            var restaurant = _restaurantLogic.SelectDetails(id).Data.FirstOrDefault();
+            var viemodel = _mapper.Map(restaurant);
+            return View("Register", viemodel);
+        }
+
 
         [HttpPost]
         public IActionResult Register(RestaurantFormViewModel restaurant)
@@ -64,5 +72,7 @@ namespace TRSAP09Web.Controlles
             var response = _restaurantLogic.Delete(id);
             return RedirectToAction("List");
         }
+
+
     }
 }
