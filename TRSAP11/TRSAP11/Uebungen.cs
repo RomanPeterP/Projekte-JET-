@@ -17,8 +17,8 @@ namespace TRSAP11
                 Name = "Musil" + Guid.NewGuid().ToString(),
                 ContactInfo = new ContactInfo
                 {
-                    Email = "musil@musil.at",
-                    PhoneNumber = "1234567890"
+                    Email = new EMail("musil@musil.at"),
+                    PhoneNumber = new PhoneNumber("676767676"),
                 },
                 PostalCode = "1140",
                 City = "Wien",

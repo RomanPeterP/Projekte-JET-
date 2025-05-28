@@ -97,10 +97,10 @@ namespace TRSAP11.Logic
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(restaurnat.ContactInfo.Email))
+            if (restaurnat.ContactInfo.Email.Value == null)
                 stringBuilder.AppendLine($"{nameof(restaurnat.ContactInfo.Email)} fehlt.");
 
-            if (string.IsNullOrWhiteSpace(restaurnat.ContactInfo.PhoneNumber))
+            if (restaurnat.ContactInfo.PhoneNumber.Value == null)
                 stringBuilder.AppendLine($"{nameof(restaurnat.ContactInfo.PhoneNumber)} fehlt.");
 
             return (stringBuilder.Length == 0);

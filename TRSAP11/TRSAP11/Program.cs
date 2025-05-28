@@ -7,11 +7,11 @@ namespace TRSAP11
         static void Main(string[] args)
         {
 
-            // Uebungen.AddRestaurant();
+            Uebungen.AddRestaurant();
             
             // Uebungen.Polymorphie();
 
-            Uebungen.Generics();
+            //Uebungen.Generics();
         }
     }
 }
