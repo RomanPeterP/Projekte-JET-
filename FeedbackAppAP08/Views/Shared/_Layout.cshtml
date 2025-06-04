@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8" />
+	<title>@ViewData["Title"] - FeedbackApp</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+</head>
+<body>
+	<header>
+	</header>
+
+	<div class="container">
+		<main role="main">
+			@RenderBody()
+		</main>
+	</div>
+
+	<footer>
+		<div class="container">
+			FEEDBACKAPP &copy; @DateTime.Now.Year - AP08
+		</div>
+	</footer>
+
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

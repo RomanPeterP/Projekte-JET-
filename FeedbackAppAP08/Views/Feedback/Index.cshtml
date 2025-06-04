@@ -1,0 +1,54 @@
+@model Feedback
+
+<h1>Geben Sie Ihr Feedback ab</h1>
+
+<form asp-action="Submit" method="post">
+	<div>
+		<input asp-for="Name" placeholder="@nameof(Model.Name)" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+	<div>
+		<textarea asp-for="Message" placeholder="@nameof(Model.Message)"></textarea>
+		<span asp-validation-for="Message" class="text-danger"></span>
+	</div>
+	<div class="radio-group">
+		<div>Ihre Bewertung</div>
+		<label>
+			<input type="radio" asp-for="Ratinggrade" value="1" /> Sehr gut
+		</label>
+		<label>
+			<input type="radio" asp-for="Ratinggrade" value="2" /> Gut
+		</label>
+		<label>
+			<input type="radio" asp-for="Ratinggrade" value="3" /> Befriedigend
+		</label>
+		<label>
+			<input type="radio" asp-for="Ratinggrade" value="4" /> Genügend
+		</label>
+		<label>
+			<input type="radio" asp-for="Ratinggrade" value="5" /> Nicht genügend
+		</label>
+		<span asp-validation-for="Ratinggrade" class="text-danger"></span>
+	</div>
+	<div>In welchem Land leben Sie?</div>
+	<select asp-for="Country" asp-items="ViewBag.Countries" class="form-control"></select>
+	<span asp-validation-for="Country" class="text-danger"></span><br />
+	<button type="submit">Absenden</button>
+</form>
+<br />
+<div>
+	<span>Hintergrundfarbe setzen</span>
+	<select onchange="lstBgColorChange(this)" id="lstBgColor">
+		<option value="white">&nbsp;</option>
+		<option value="yellow">gelb</option>
+		<option value="orange">orange</option>
+		<option value="turquoise">türkis</option>
+		<option value="gold">gold</option>
+	</select>
+	<p><a href="javascript:deleteCookieClick();">Hintergrundfarbe löschen</a></p>
+</div>
+
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

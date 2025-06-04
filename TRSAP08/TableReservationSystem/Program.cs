@@ -38,7 +38,6 @@ namespace TableReservationSystem
             var serviceProvider = scope.ServiceProvider;
             var logic = serviceProvider.GetRequiredService<IRestaurantLogic>();
 
-            
             AddRestaurant(logic, true);
             //ListAllRestaurants(logic);
 

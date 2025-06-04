@@ -30,6 +30,8 @@ public partial class TableReservationSystemContext : DbContext
 
     public virtual DbSet<Table> Table { get; set; }
 
+    public virtual DbSet<UpcomingReservation> UpcomingReservation { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(Config.ConfigItems.GetConnectionString("default"));
 
@@ -131,6 +133,11 @@ public partial class TableReservationSystemContext : DbContext
             entity.HasOne(e => e.Restaurant).WithMany(p => p.Tables)
                 .HasForeignKey(e => e.RestaurantId);
         });
+
+        modelBuilder
+             .Entity<UpcomingReservation>()
+             .ToView("UpcomingReservation")
+             .HasNoKey();
 
         OnModelCreatingPartial(modelBuilder);
     }
