@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 public class FeedbackController : Controller
@@ -49,5 +51,12 @@ public class FeedbackController : Controller
             HttpContext.Response.Cookies.Append("bgColor", "gold");
 
         return View();
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Admin")]
+    public IActionResult List()
+    {
+        return View(_context.Feedbacks.OrderByDescending(f=> f.SubmittedAt));
     }
 }

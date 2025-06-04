@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Feedback>
+
+<h2>Liste mit abgegebenen Feedbacks</h2>
+
+@foreach (var feedback in Model)
+{
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+        <div><strong>@feedback.Name</strong></div>
+        <div>@feedback.Message</div>
+        <div>Bewertung: @feedback.Ratinggrade</div>
+        <div>Eingereicht am: @feedback.SubmittedAt.ToString("dd.MM.yyyy HH:mm")</div>
+    </div>
+}

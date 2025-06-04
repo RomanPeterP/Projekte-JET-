@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form method="post" style="width: 300px; margin: 2em auto; display: flex; flex-direction: column; gap: 1em;">
+    <div>
+        <label for="username">Benutzername:</label><br />
+        <input type="text" id="username" name="username" style="width: 100%;" />
+    </div>
+
+    <div>
+        <label for="password">Passwort:</label><br />
+        <input type="password" id="password" name="password" style="width: 100%;" />
+    </div>
+
+    <div>
+        <button type="submit" style="width: 100%; padding: 0.5em;">Login</button>
+    </div>
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <p style="color: red; text-align: center;">@ViewBag.Error</p>
+}
