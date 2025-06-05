@@ -7,7 +7,7 @@
         ContactInfo ContactInfo { get; set; }
         int ContactInfoId { get; set; }
         string CountryCode { get; set; }
-        Country CountryCodeNavigation { get; set; }
+        Country Country { get; set; }
         string Name { get; set; }
         string PostalCode { get; set; }
         ICollection<Reservation> Reservations { get; set; }

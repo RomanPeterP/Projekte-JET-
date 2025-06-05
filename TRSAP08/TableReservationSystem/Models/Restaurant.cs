@@ -22,7 +22,7 @@ public class Restaurant : IRestaurant
 
     public virtual ContactInfo ContactInfo { get; set; } = null!;
 
-    public virtual Country CountryCodeNavigation { get; set; } = null!;
+    public virtual Country Country { get; set; } = null!;
 
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 

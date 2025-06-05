@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using TableReservationSystem.Data;
 using TableReservationSystem.Models;
 
@@ -73,9 +74,9 @@ namespace TableReservationSystemTests
 
             // 7. Restaurant inkl. zugehörigem Land anzeigen (Eager Loading)
             Console.WriteLine("7. Restaurants mit Land:");
-            var restaurantsWithCountry = context.Restaurant.Include(r => r.CountryCodeNavigation).ToList();
+            var restaurantsWithCountry = context.Restaurant.Include(r => r.Country).ToList();
             foreach (var r in restaurantsWithCountry)
-                Console.WriteLine($"- {r.Name} ({r.CountryCodeNavigation?.Name})");
+                Console.WriteLine($"- {r.Name} ({r.Country?.Name})");
 
             // 8. Restaurant hinzufügen
             Console.WriteLine("8. Restaurant hinzufügen:");
@@ -153,10 +154,10 @@ namespace TableReservationSystemTests
             Console.WriteLine("16. Restaurant mit Kontakt und Land:");
             var fullData = context.Restaurant
                 .Include(r => r.ContactInfo)
-                .Include(r => r.CountryCodeNavigation)
+                .Include(r => r.Country)
                 .ToList();
             foreach (var r in fullData)
-                Console.WriteLine($"{r.Name}: {r.ContactInfo?.Email}, {r.CountryCodeNavigation?.Name}");
+                Console.WriteLine($"{r.Name}: {r.ContactInfo?.Email}, {r.Country?.Name}");
 
             // 17. Reservierung inkl. Kontakt, Zeit, Restaurant, Status (Mehrfaches Include)
             Console.WriteLine("17. Reservierung inkl. aller Infos:");
@@ -223,6 +224,37 @@ namespace TableReservationSystemTests
             else
             {
                 Console.WriteLine("Kein Restaurant gefunden.");
+            }
+
+            //  22. Zeigen Sie alle Reservierungen, die am heutigen Tag (ohne Urzeit) stattfinden
+            // und geben Sie diese mit der Uhrzeit aus
+            Console.WriteLine("22. Reservierungen, von Heute");
+            var heutigeReservierungen = context.Reservation
+                .Include(t => t.ReservationTimes)
+                .Where(r => r.Date == DateOnly.FromDateTime(DateTime.Today));
+            foreach (var r in heutigeReservierungen)
+            {
+                Console.WriteLine($"{r.Name} reserviert Tisch {r.TableNumber} um {r.ReservationTimes.Time} Uhr.");
+            }
+
+
+            // 23 .Zeigen Sie alle aktiven Tische des Restaurants "La Piazza".
+
+            var tischePiazzaCount = context.Table
+               .Include(t => t.Restaurant)
+               .Count(t => t.Restaurant.Name == "Musild9ea8f9a-691a-413f-bcd7-0" && t.Activ);
+
+            Console.WriteLine($"Restaurant Musild9ea8f9a-691a-413f-bcd7-0 hat {tischePiazzaCount} Tisch(e).");
+
+            // 24 .Zeigen Sie alle Tische mit ihrem Restaurant
+            // und der zugehörigen Kontaktinformation des Restaurants.
+            var tablesInRestaurant = context.Table
+                .Include(t => t.Restaurant)
+                    .ThenInclude(t => t.ContactInfo);
+
+            foreach (var item in tablesInRestaurant)
+            {
+                Console.WriteLine($"{item.TableNumber} {item.Restaurant.ContactInfo.Email} {item.Restaurant.ContactInfo.PhoneNumber}");
             }
         }
 

@@ -119,7 +119,7 @@ public partial class TableReservationSystemContext : DbContext
                 .HasForeignKey(e => e.ContactInfoId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            entity.HasOne(e => e.CountryCodeNavigation).WithMany(p => p.Restaurants)
+            entity.HasOne(e => e.Country).WithMany(p => p.Restaurants)
                 .HasForeignKey(e => e.CountryCode)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         });
@@ -138,6 +138,10 @@ public partial class TableReservationSystemContext : DbContext
              .Entity<UpcomingReservation>()
              .ToView("UpcomingReservation")
              .HasNoKey();
+
+        modelBuilder.Entity<ReservationsFromDay>()
+            .ToFunction("ReservationsFromDay")
+            .HasNoKey();
 
         OnModelCreatingPartial(modelBuilder);
     }
