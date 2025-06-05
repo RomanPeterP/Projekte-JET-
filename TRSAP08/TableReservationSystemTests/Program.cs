@@ -11,7 +11,7 @@ namespace TableReservationSystemTests
 
 
             using var context = new TableReservationSystemContext();
-            // var liste = context.UpcomingReservation.ToList();
+            var liste = context.UpcomingReservation.ToList();
 
             var date = DateTime.Now;
             var reservierungen = context.Set<ReservationsFromDay>()
