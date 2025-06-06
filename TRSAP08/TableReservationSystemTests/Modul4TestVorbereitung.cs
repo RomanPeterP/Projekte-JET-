@@ -256,6 +256,25 @@ namespace TableReservationSystemTests
             {
                 Console.WriteLine($"{item.TableNumber} {item.Restaurant.ContactInfo.Email} {item.Restaurant.ContactInfo.PhoneNumber}");
             }
+
+            // 25.  Abfrage, die für ein bestimmtes Restaurant anzeigt, welche Tische am 2025-06-06 um 12:00 Uhr noch frei sind.
+            var restaurant = context.Restaurant.First(r=> r.RestaurantId == 6);
+            var zeit = context.ReservationTime.First(rt => rt.Time ==   new TimeOnly(12, 00, 0));
+            var datum = new DateTime(2025, 6, 6);
+
+            var belegteTischIds = context.Reservation
+                .Where(r => r.Date == DateOnly.FromDateTime(datum) && r.ReservationTimeId == zeit.ReservationTimeId)
+                .Select(r => r.TableNumber)
+                .ToList();
+
+            var freieTische = context.Table
+                .Where(t => t.RestaurantId == restaurant.RestaurantId && !belegteTischIds.Contains(t.TableNumber))
+                .ToList();
+
+            foreach (var tisch in freieTische)
+            {
+                Console.WriteLine($"Tisch {tisch.TableNumber}, Sitzplätze: {tisch.NumberOfSeats}");
+            }
         }
 
     }
