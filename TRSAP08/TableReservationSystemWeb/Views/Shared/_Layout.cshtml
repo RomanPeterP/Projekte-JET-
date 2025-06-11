@@ -6,14 +6,22 @@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-	<header>
-		<div>
-			<a asp-controller="Restaurant" asp-action="Register">Registrieren</a>
-			<a asp-controller="Restaurant" asp-action="List">Liste</a>
-		</div>
-	</header>
+	<header></header>
 
 	<div class="container">
+		@if (User.Identity?.IsAuthenticated ?? false)
+		{
+			<p class="text-green-600">Angemeldet als @User.Identity.Name <a href="/Account/Logout" class="text-red-600 hover:underline">Logout</a></p>
+
+			<div>
+				<a asp-controller="Restaurant" asp-action="Register">Registrieren</a>
+				<a asp-controller="Restaurant" asp-action="List">Liste</a>
+			</div>
+		}
+		else
+		{
+			<a href="/Account/Login" class="text-blue-600 hover:underline">Login</a>
+		}
 		<main role="main">
 			@RenderBody()
 		</main>

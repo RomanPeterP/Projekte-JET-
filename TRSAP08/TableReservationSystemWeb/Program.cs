@@ -24,6 +24,13 @@ namespace TableReservationSystemWeb
             builder.Services.AddScoped<IResponse<Country>, Response<Country>>();
             builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
             builder.Services.AddScoped<IMiscRepository, MiscRepository>();
+            builder.Services.AddAuthentication("TRSCookieAuth")
+            .AddCookie("TRSCookieAuth", options =>
+            {
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
 
             var app = builder.Build();
 
@@ -34,7 +41,8 @@ namespace TableReservationSystemWeb
 
             app.UseStaticFiles();
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Restaurant}/{action=Register}/{id?}");

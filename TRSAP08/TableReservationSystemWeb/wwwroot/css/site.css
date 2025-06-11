@@ -52,3 +52,26 @@ input[type="email"] {
     color: red;
     font-size: 0.9em;
 }
+
+.login-form {
+    width: 300px;
+    margin: 2em auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.input-full {
+    width: 100%;
+}
+
+.login-button {
+    width: 100%;
+    padding: 0.5em;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+

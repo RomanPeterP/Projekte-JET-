@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TableReservationSystem.Models;
 using TableReservationSystem.Models.Interfaces;
@@ -6,6 +7,7 @@ using TableReservationSystem.Viewmodels;
 
 namespace TableReservationSystemWeb.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RestaurantController : Controller
     {
         private readonly IMiscLogic _misclogic;
