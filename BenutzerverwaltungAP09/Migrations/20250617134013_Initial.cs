@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BenutzerverwaltungAP08.Migrations
+namespace BenutzerverwaltungAP09.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BenutzerverwaltungAP08.Migrations
+namespace BenutzerverwaltungAP09.Migrations
 {
     [DbContext(typeof(BenutzerContext))]
     partial class BenutzerContextModelSnapshot : ModelSnapshot
@@ -21,7 +21,7 @@ namespace BenutzerverwaltungAP08.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BenutzerverwaltungAP08.Models.Benutzer", b =>
+            modelBuilder.Entity("BenutzerverwaltungAP09.Models.Benutzer", b =>
                 {
                     b.Property<int>("BenutzerId")
                         .ValueGeneratedOnAdd()

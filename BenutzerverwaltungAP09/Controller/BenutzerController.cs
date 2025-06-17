@@ -1,8 +1,8 @@
-﻿using BenutzerverwaltungAP08.Models;
+﻿using BenutzerverwaltungAP09.Models;
 using EFCNorthwindUebungen.Data;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BenutzerverwaltungAP08.Controller
+namespace BenutzerverwaltungAP09.Controller
 {
     [ApiController]
     [Route("benutzer")]

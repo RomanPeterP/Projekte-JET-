@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BenutzerverwaltungAP08.Models
+namespace BenutzerverwaltungAP09.Models
 {
     public class Benutzer
     {
