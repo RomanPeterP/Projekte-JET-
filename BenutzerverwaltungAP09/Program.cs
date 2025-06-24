@@ -1,4 +1,4 @@
-namespace BenutzerverwaltungAP09
+﻿namespace BenutzerverwaltungAP09
 {
     public class Program
     {
@@ -6,7 +6,23 @@ namespace BenutzerverwaltungAP09
         {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
-            var app = builder.Build();
+
+
+                    // Nur für Zugriff von fremden Seiten notw.
+                    builder.Services.AddCors(options =>
+                    {
+                        options.AddPolicy("AllowLocalhost777", policy =>
+                        {
+                            policy.WithOrigins("http://localhost:777")
+                                  .AllowAnyMethod()
+                                  .AllowAnyHeader();
+                        });
+                    });
+                    var app = builder.Build();
+
+                    app.UseCors("AllowLocalhost777");
+
+
 
             app.UseRouting();
             app.UseEndpoints(endpoints =>

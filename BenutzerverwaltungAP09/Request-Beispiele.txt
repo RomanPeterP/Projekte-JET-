@@ -1,0 +1,21 @@
+﻿POST /benutzer/registrierenjson  HTTP/1.1
+Host: localhost:5217
+Accept: application/json
+Content-Type: application/json
+
+{
+    "Vorname": "Felix",
+    "Nachname": "Nowack",
+    "Alter": 35
+}
+
+
+GET /benutzer/Nowack  HTTP/1.1
+Host: localhost:5144
+
+GET /benutzer/Liste  HTTP/1.1
+Host: localhost:5217
+
+
+
+
