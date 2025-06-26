@@ -51,7 +51,7 @@ namespace TableReservationSystemWeb.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("TRSCookieAuth");
-            return RedirectToAction("Index", "Restaurant");
+            return RedirectToAction("Login", "Account");
         }
 
         public IActionResult AccessDenied()

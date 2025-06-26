@@ -62,6 +62,7 @@ namespace TableReservationSystemWeb.Controllers
         {
             if(viewmodel == null)
                 viewmodel = new RestaurantFormViewModel();
+
             var countryList = _misclogic.CountriesData().Data
                 .Select(k => new SelectListItem
                 {
