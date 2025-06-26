@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Azure;
+using System.Text;
+using System.Text.RegularExpressions;
 using TableReservationSystem.Models;
 using TableReservationSystem.Models.Interfaces;
 
@@ -42,11 +44,23 @@ namespace TableReservationSystem.Logic
             return _response;
         }
 
-        public IResponse<IRestaurant> Data()
+        public IResponse<IRestaurant> Data(RestaurantSearchCriteria? searchCriteria)
         {
             try
             {
-                _response.Data = _repository.Select;
+                var wordsAndPhrases = new List<string>();
+                if (!string.IsNullOrWhiteSpace(searchCriteria?.WordsAndPhrases))
+                {
+                    var matches = Regex.Matches(searchCriteria.WordsAndPhrases, "\"([^\"]+)\"|(\\S+)", RegexOptions.IgnoreCase);
+                    foreach (Match match in matches)
+                    {
+                        var begriff = match.Groups[1].Success ? match.Groups[1].Value : match.Value;
+                        if (!string.IsNullOrWhiteSpace(begriff))
+                            wordsAndPhrases.Add(begriff);
+                    }
+                }
+                _response.Data = wordsAndPhrases.Any() ? _repository.SelectFiltered(wordsAndPhrases.ToArray())
+                    : _repository.Select;
                 _response.StatusCode = Enums.StatusCode.Success;
             }
             catch (Exception ex)

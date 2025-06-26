@@ -50,20 +50,22 @@ namespace TableReservationSystem.Logic
             };
         }
 
-        public RestaurantListViewModel Map(IEnumerable<IRestaurant>? restaurants, string? message)
+        public RestaurantListViewModel Map(IEnumerable<IRestaurant>? restaurants, string? message,
+            RestaurantListViewModel? inViemodel)
         {
-            var viewmodel = new RestaurantListViewModel();
+            var outViewmodel = new RestaurantListViewModel();
+            outViewmodel.RestaurantSearchCriteriaViewModel = inViemodel?.RestaurantSearchCriteriaViewModel;
             if (restaurants == null)
-                return viewmodel;
+                return outViewmodel;
 
             var list = new List<RestaurantViewModel>();
             foreach (var item in restaurants)
             {
                 list.Add(Map(item));
             }
-            viewmodel.RestaurantsList = list;
-            viewmodel.Message = message;
-            return viewmodel;
+            outViewmodel.RestaurantsList = list;
+            outViewmodel.Message = message;
+            return outViewmodel;
         }
 
         public RestaurantViewModel Map(IRestaurant? restaurant)
@@ -78,6 +80,17 @@ namespace TableReservationSystem.Logic
                 AddressSummary = $"{restaurant.StreetHouseNr}, {restaurant.CountryCode}-{restaurant.PostalCode} {restaurant.City}",
                 Email = restaurant.ContactInfo?.Email,
                 PhoneNumber = restaurant.ContactInfo?.PhoneNumber
+            };
+        }
+
+        public RestaurantSearchCriteria Map(RestaurantSearchCriteriaViewModel? searchCriteriaViewModel)
+        {
+            if (searchCriteriaViewModel == null)
+                return new RestaurantSearchCriteria();
+
+            return new RestaurantSearchCriteria
+            {
+                WordsAndPhrases = searchCriteriaViewModel.WordsAndPhrases
             };
         }
     }

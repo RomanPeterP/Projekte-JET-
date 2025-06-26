@@ -7,5 +7,7 @@
 
         void Delete(int id);
         void Insert(Restaurant restaurant);
+
+        IEnumerable<IRestaurant> SelectFiltered(string[] words);
     }
 }

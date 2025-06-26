@@ -104,7 +104,7 @@ namespace TableReservationSystem
         private static void ListAllRestaurants(IRestaurantLogic logic)
         {
             // Daten von allen registrierten Restaurants abrufen
-            var response = logic.Data();
+            var response = logic.Data(null);
             if (response.StatusCode == Enums.StatusCode.Success)
             {
                 var data = response.Data;

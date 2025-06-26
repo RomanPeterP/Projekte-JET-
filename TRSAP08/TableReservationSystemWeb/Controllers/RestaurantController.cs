@@ -35,11 +35,12 @@ namespace TableReservationSystemWeb.Controllers
 
 
         [HttpGet]
-        public IActionResult List()
+        public IActionResult List([FromQuery] RestaurantListViewModel? inViewModel)
         {
-            var listResponse = _restaurantlogic.Data();
-            var viewmodel = _mapper.Map(listResponse.Data, listResponse.Message); 
-            return View(viewmodel);
+            var searchCriteria = _mapper.Map(inViewModel?.RestaurantSearchCriteriaViewModel);
+            var listResponse = _restaurantlogic.Data(searchCriteria);
+            var outViewmodel = _mapper.Map(listResponse.Data, listResponse.Message, inViewModel); 
+            return View(outViewmodel);
         }
 
 
