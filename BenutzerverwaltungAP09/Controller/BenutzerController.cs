@@ -1,5 +1,5 @@
-﻿using BenutzerverwaltungAP09.Models;
-using EFCNorthwindUebungen.Data;
+﻿using BenutzerverwaltungAP09.Data;
+using BenutzerverwaltungAP09.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BenutzerverwaltungAP09.Controller

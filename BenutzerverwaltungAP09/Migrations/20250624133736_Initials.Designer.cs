@@ -4,6 +4,7 @@ using BenutzerverwaltungAP09.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BenutzerverwaltungAP09.Migrations
 {
     [DbContext(typeof(BenutzerContext))]
-    partial class BenutzerContextModelSnapshot : ModelSnapshot
+    [Migration("20250624133736_Initials")]
+    partial class Initials
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +36,9 @@ namespace BenutzerverwaltungAP09.Migrations
                     b.Property<byte>("Alter")
                         .HasColumnType("tinyint");
 
+                    b.Property<int?>("LoginDataBenutzerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nachname")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -44,6 +50,8 @@ namespace BenutzerverwaltungAP09.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("BenutzerId");
+
+                    b.HasIndex("LoginDataBenutzerId");
 
                     b.ToTable("Benutzer");
                 });
@@ -75,20 +83,24 @@ namespace BenutzerverwaltungAP09.Migrations
                     b.ToTable("LoginData");
                 });
 
+            modelBuilder.Entity("BenutzerverwaltungAP09.Models.Benutzer", b =>
+                {
+                    b.HasOne("BenutzerverwaltungAP09.Models.LoginData", "LoginData")
+                        .WithMany()
+                        .HasForeignKey("LoginDataBenutzerId");
+
+                    b.Navigation("LoginData");
+                });
+
             modelBuilder.Entity("BenutzerverwaltungAP09.Models.LoginData", b =>
                 {
                     b.HasOne("BenutzerverwaltungAP09.Models.Benutzer", "Benutzer")
-                        .WithOne("LoginData")
+                        .WithOne()
                         .HasForeignKey("BenutzerverwaltungAP09.Models.LoginData", "BenutzerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Benutzer");
-                });
-
-            modelBuilder.Entity("BenutzerverwaltungAP09.Models.Benutzer", b =>
-                {
-                    b.Navigation("LoginData");
                 });
 #pragma warning restore 612, 618
         }
