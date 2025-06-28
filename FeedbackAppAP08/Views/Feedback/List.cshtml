@@ -1,13 +1,20 @@
-﻿@model IEnumerable<Feedback>
+﻿@using FeedbackAppAP08.Viewmodels
+@model FeedbackListViewModel
 
 <h2>Liste mit abgegebenen Feedbacks</h2>
+<form asp-action="List" method="get">
+	<div class="form-group">
+		<input asp-for="FeedbackSearchCriteria.Words" type="text" class="form-control" />
+		<button type="submit" class="btn btn-primary">Suchen</button>
+	</div>
+</form>
 
-@foreach (var feedback in Model)
+@foreach (var feedback in Model.FeedbackList)
 {
-    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
-        <div><strong>@feedback.Name</strong></div>
-        <div>@feedback.Message</div>
-        <div>Bewertung: @feedback.Ratinggrade</div>
-        <div>Eingereicht am: @feedback.SubmittedAt.ToString("dd.MM.yyyy HH:mm")</div>
-    </div>
+	<div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 15px;">
+		<div><strong>@feedback.Name</strong></div>
+		<div>@feedback.Message</div>
+		<div>Bewertung: @feedback.Ratinggrade</div>
+		<div>Eingereicht am: @feedback.SubmittedAt.ToString("dd.MM.yyyy HH:mm")</div>
+	</div>
 }

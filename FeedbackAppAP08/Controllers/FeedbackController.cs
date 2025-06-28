@@ -1,3 +1,4 @@
+using FeedbackAppAP08.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -55,8 +56,43 @@ public class FeedbackController : Controller
 
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    public IActionResult List()
+    public IActionResult List(FeedbackListViewModel? inViewmodel)
     {
-        return View(_context.Feedbacks.OrderByDescending(f=> f.SubmittedAt));
+        // mappen von hereinkommendem Viewmodel in das hinausgehende,
+        // um Suchwörter im Inputfeld wiederherstellen / anzeigen zu können
+        var outViewmodel = new FeedbackListViewModel
+        {
+            FeedbackSearchCriteria = inViewmodel?.FeedbackSearchCriteria
+        };
+
+        var begriffe = new List<string>();
+        var words = inViewmodel?.FeedbackSearchCriteria?.Words;
+        if (!string.IsNullOrWhiteSpace(words))
+        {
+            var arr = words.Split(" ");
+            foreach (var word in arr)
+            {
+                if (!string.IsNullOrWhiteSpace(word))
+                    begriffe.Add(word.Trim());
+            }
+        }
+
+        // Einfache Abfrage aller Datensätze- falls keine Scuhbegriffe übergeben,
+        if (begriffe.Count == 0)
+            outViewmodel.FeedbackList = _context.Feedbacks.OrderByDescending(f => f.SubmittedAt);
+        else
+        {
+            // ... sonst Filtern nach Suchwörtern
+            outViewmodel.FeedbackList = _context.Feedbacks
+            .Where(r =>
+                begriffe.ToArray().All(w =>
+                    r.Name.Contains(w) ||
+                    r.Country.Contains(w) ||
+                    r.Message.Contains(w) ||
+                    r.Ratinggrade.ToString().Contains(w)
+                )).OrderByDescending(f => f.SubmittedAt);
+
+        }
+        return View(outViewmodel);
     }
 }
