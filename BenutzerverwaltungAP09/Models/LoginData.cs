@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
 
 namespace BenutzerverwaltungAP09.Models
 {
@@ -8,10 +9,12 @@ namespace BenutzerverwaltungAP09.Models
         public string Benutzername { get; set; } = null!;
         public string Passwort { get; set; } = null!;
         public bool IsActive { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? ModifiedAt { get; set; }
 
-        public Benutzer Benutzer { get; set; } = null!;
+        // Hier nulable wegen Validierung im WebController
+        public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? ModifiedAt { get; set; }
+        
+        public Benutzer? Benutzer { get; set; } = null!;
     }
 
 }

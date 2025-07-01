@@ -2,13 +2,13 @@
 using BenutzerverwaltungAP09.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BenutzerverwaltungAP09.Controller
+namespace BenutzerverwaltungAP09.Controllers
 {
     [ApiController]
     [Route("benutzer")]
     public class BenutzerController : ControllerBase
     {
-        [HttpPost("Registrieren")]  
+        [HttpPost("Registrieren")]
         public IActionResult Registrieren([FromForm] Benutzer benutzer)
         {
             if (!ModelState.IsValid)

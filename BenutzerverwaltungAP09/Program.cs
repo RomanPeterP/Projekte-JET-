@@ -5,9 +5,7 @@
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddControllers();
-
-
+            builder.Services.AddControllersWithViews();
                     // Nur für Zugriff von fremden Seiten notw.
                     builder.Services.AddCors(options =>
                     {
@@ -23,13 +21,11 @@
                     app.UseCors("AllowLocalhost777");
 
 
-
+            app.UseStaticFiles();
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints?.MapControllers();
-            });
-
+            app.MapControllerRoute(
+             name: "default",
+             pattern: "{controller=BenutzerWeb}/{action=Registrieren}");
             app.Run();
         }
     }

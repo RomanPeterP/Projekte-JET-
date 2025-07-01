@@ -1,0 +1,85 @@
+﻿@model Benutzer
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <title>Benutzer-Registrierung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2em;
+        }
+
+        form {
+            max-width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 1em;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.4em;
+            margin-top: 0.2em;
+            box-sizing: border-box;
+        }
+
+        .checkbox {
+            margin-top: 1em;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        button {
+            margin-top: 1.5em;
+            padding: 0.6em 1.2em;
+            font-size: 1em;
+        }
+
+        h1, h4 {
+            margin-top: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Benutzer-Registrierung</h1>
+
+    <form asp-action="Registrieren" method="post">
+        <label asp-for="Vorname"></label>
+        <input asp-for="Vorname" />
+        <span asp-validation-for="Vorname" class="error"></span>
+
+        <label asp-for="Nachname"></label>
+        <input asp-for="Nachname" />
+        <span asp-validation-for="Nachname" class="error"></span>
+
+        <label asp-for="Alter"></label>
+        <input asp-for="Alter" type="number" />
+        <span asp-validation-for="Alter" class="error"></span>
+
+        <h4>Login-Daten</h4>
+
+        <label asp-for="LoginData.Benutzername"></label>
+        <input asp-for="LoginData.Benutzername" />
+        <span asp-validation-for="LoginData.Benutzername" class="error"></span>
+
+        <label asp-for="LoginData.Passwort"></label>
+        <input asp-for="LoginData.Passwort" type="password" />
+        <span asp-validation-for="LoginData.Passwort" class="error"></span>
+
+        <div class="checkbox">
+            <input asp-for="LoginData.IsActive" />
+            <label asp-for="LoginData.IsActive"></label>
+        </div>
+        <button type="submit">Speichern</button>
+    </form>
+</body>
+</html>
