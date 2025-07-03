@@ -15,14 +15,19 @@
 	</header>
 
 	<div class="container">
-		@if (User.Identity?.IsAuthenticated ?? false)
-		{
-			<p class="text-green-600">Angemeldet als @User.Identity.Name <a href="/Account/Logout" class="text-red-600 hover:underline">Logout</a> 			<a href="/Feedback/List" class="text-red-600 hover:underline">Liste</a>	</p>
-		}
-		else
-		{
+		<p class="text-green-600">
+			@if (User.Identity?.IsAuthenticated ?? false)
+			{
+				<span>Angemeldet als @User.Identity.Name</span>
+
+				<a href="/Account/Logout" class="text-red-600 hover:underline">Logout</a> 			<a href="/Feedback/List" class="text-red-600 hover:underline">Liste</a>
+	}
+			else
+			{
 			<a href="/Account/Login" class="text-blue-600 hover:underline">Login</a>
-		}
+			}
+			<a href="/Feedback/Index" class="text-blue-600 hover:underline">Feedback-Eingabe</a>
+		</p>
 		<main role="main">
 			@RenderBody()
 		</main>
