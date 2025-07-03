@@ -33,7 +33,7 @@
 	<div>In welchem Land leben Sie?</div>
 	<select asp-for="Country" asp-items="ViewBag.Countries" class="form-control"></select>
 	<span asp-validation-for="Country" class="text-danger"></span><br />
-	<button type="submit">Absenden</button>
+	<button type="submit">Absenden</button>&nbsp;<button type="submit" formaction="/Feedback/Submit?isDraw=true">Entwurf speichern</button>
 </form>
 <br />
 <div>

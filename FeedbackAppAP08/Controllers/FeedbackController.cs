@@ -1,14 +1,17 @@
 using FeedbackAppAP08.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 public class FeedbackController : Controller
 {
     private readonly FeedbackDbContext _context;
+    private const string KeyName = "Feedback";
 
     public FeedbackController(FeedbackDbContext context)
     {
@@ -17,30 +20,47 @@ public class FeedbackController : Controller
 
     public IActionResult Index()
     {
-        ViewBag.Countries = new List<SelectListItem>
+        ViewBagCountries();
+
+        Feedback? feedback = null;
+
+        var feedbackJson = HttpContext.Session.GetString(KeyName);
+        if (feedbackJson != null)
         {
-            new SelectListItem { Value = "", Text = "" },
-            new SelectListItem { Value = "AT", Text = "Österreich" },
-            new SelectListItem { Value = "DE", Text = "Deutschland" },
-            new SelectListItem { Value = "CH", Text = "Schweiz" },
-        };
+            feedback = JsonSerializer.Deserialize<Feedback>(feedbackJson);
+        }
+
 
         ViewData["Title"] = "Eingabe";
-        return View();
+        return View(feedback);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Submit(Feedback feedback)
+    public async Task<IActionResult> Submit(Feedback feedback, [FromQuery] bool isDraw)
     {
+        ViewBagCountries();
         if (!ModelState.IsValid)
             return View("Index", feedback);
 
-        _context.Feedbacks.Add(feedback);
-        await _context.SaveChangesAsync();
+        if (!isDraw)
+        {
+            _context.Feedbacks.Add(feedback);
+            await _context.SaveChangesAsync();
+            HttpContext.Session.Remove(KeyName);
+            TempData["Name"] = feedback.Name;
 
-        TempData["Name"] = feedback.Name;
+            return RedirectToAction("ThankYou");
+        }
 
-        return RedirectToAction("ThankYou");
+        if (isDraw)
+        {
+            string json = JsonSerializer.Serialize(feedback);
+            HttpContext.Session.SetString(KeyName, json);
+
+            return RedirectToAction("Index", feedback);
+        }
+
+        return View();
     }
 
     public IActionResult ThankYou()
@@ -94,5 +114,16 @@ public class FeedbackController : Controller
 
         }
         return View(outViewmodel);
+    }
+
+    private void ViewBagCountries()
+    {
+        ViewBag.Countries = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "", Text = "" },
+            new SelectListItem { Value = "AT", Text = "Österreich" },
+            new SelectListItem { Value = "DE", Text = "Deutschland" },
+            new SelectListItem { Value = "CH", Text = "Schweiz" },
+        };
     }
 }
