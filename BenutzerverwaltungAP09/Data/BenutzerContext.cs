@@ -17,7 +17,8 @@ public partial class BenutzerContext : DbContext
         modelBuilder.Entity<LoginData>()
             .HasOne(ld => ld.Benutzer)   // Navigation zu Benutzer
             .WithOne(b => b.LoginData)  // Rücknavigation
-            .HasForeignKey<LoginData>(ld => ld.BenutzerId); // Fremdschlüssel ist gleichzeitig Primärschlüssel
+            .HasForeignKey<LoginData>(ld => ld.BenutzerId)   // Fremdschlüssel ist gleichzeitig Primärschlüssel
+            .OnDelete(DeleteBehavior.Restrict);  // Löschweitergabe deaktiviert
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

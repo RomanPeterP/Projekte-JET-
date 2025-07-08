@@ -1,1 +1,80 @@
 ﻿@model IEnumerable<Benutzer>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style>
+        body {
+            background-color: rgb(54,54,54);
+            color: aliceblue;
+            font-size: 15pt;
+            margin-left: 8.0rem;
+        }
+
+        h1 {
+            margin-top: 3.0rem;
+            text-align: center;
+            color: rgb(163, 107, 3);
+            padding: 2px;
+        }
+
+        th {
+            text-align: left;
+            padding: 5px;
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        form {
+            margin-left: 12.0rem;
+            margin-top: 2.0rem;
+        }
+
+        .text-danger {
+            color: red;
+            font-size: 0.9em;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function warnUser(){
+            return confirm("Wollen Sie den Benutzer wirklich löschen?");
+        }
+    </script>
+</head>
+<body>
+    <h1>Benutzerliste</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Vorname</th>
+            <th>Nachname</th>
+            <th>Alter</th>
+            <th>Benutzername</th>
+            <th>Passwort</th>
+            <th>Active</th>
+            <th>Aktionen</th>
+        </tr>
+        @foreach (Benutzer nutzer in @Model)
+        {
+            <tr>
+                <td>@nutzer.BenutzerId</td>
+                <td>@nutzer.Vorname</td>
+                <td>@nutzer.Nachname</td>
+                <td>@nutzer.Alter</td>
+                <td>@nutzer?.LoginData?.Benutzername</td>
+                <td>@nutzer?.LoginData?.Passwort</td>
+                <td>@nutzer?.LoginData?.IsActive</td>
+                <td>
+                    <a onclick="return warnUser()" asp-action="Loeschen" asp-route-id="@nutzer?.BenutzerId">Löschen</a>
+                    <a asp-action="Bearbeiten" asp-route-id="@nutzer.BenutzerId">Bearbeiten</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>

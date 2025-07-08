@@ -4,7 +4,7 @@ namespace BenutzerverwaltungAP09.Models
 {
     public class Benutzer
     {
-        public int BenutzerId { get; set; }
+        public int? BenutzerId { get; set; }
         [MaxLength(20)]
         public string Vorname { get; set; } = null!;
         [MaxLength(50)]

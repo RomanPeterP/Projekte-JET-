@@ -53,6 +53,7 @@
     <h1>Benutzer-Registrierung</h1>
 
     <form asp-action="Registrieren" method="post">
+        <input type="hidden" asp-for="BenutzerId" />
         <label asp-for="Vorname"></label>
         <input asp-for="Vorname" />
         <span asp-validation-for="Vorname" class="error"></span>
@@ -74,7 +75,16 @@
         <label asp-for="LoginData.Passwort"></label>
         <input asp-for="LoginData.Passwort" type="password" />
         <span asp-validation-for="LoginData.Passwort" class="error"></span>
-
+        
+        @if (Model?.BenutzerId == null)
+        {
+            <input asp-for="LoginData.Passwort" type="password" />
+            <span asp-validation-for="LoginData.Passwort" class="error"></span>
+        }
+        else
+        {
+            <input asp-for="LoginData.Passwort" style="background-color:gray" type="text" readonly />
+        }
         <div class="checkbox">
             <input asp-for="LoginData.IsActive" />
             <label asp-for="LoginData.IsActive"></label>
