@@ -1,9 +1,14 @@
+using FeedbackAppAP08.Models;
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 public class Feedback
 {
-    public int Id { get; set; }
+    public int FeedbackId { get; set; }
 
     [Required(ErrorMessage = nameof(Name) + " ist erforderlich.")]
     [StringLength(30)]
@@ -21,4 +26,10 @@ public class Feedback
     public string Country { get; set; }
 
     public DateTime SubmittedAt { get; set; } = DateTime.Now;
+
+    [NotMapped] // Weil wir kein ViewModel haben (nicht empfohlen)
+    [JsonIgnore]
+    public IEnumerable<IFormFile>? DocsFromWeb { get; set; }
+
+    public virtual ICollection<Doc> Documents { get; set; } = new List<Doc>();
 }

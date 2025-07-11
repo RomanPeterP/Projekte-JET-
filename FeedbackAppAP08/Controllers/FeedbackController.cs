@@ -1,11 +1,13 @@
+using FeedbackAppAP08.Logic;
+using FeedbackAppAP08.Models;
 using FeedbackAppAP08.Viewmodels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 public class FeedbackController : Controller
@@ -22,15 +24,7 @@ public class FeedbackController : Controller
     {
         ViewBagCountries();
 
-        Feedback? feedback = null;
-
-        var feedbackJson = HttpContext.Session.GetString(KeyName);
-        if (feedbackJson != null)
-        {
-            feedback = JsonSerializer.Deserialize<Feedback>(feedbackJson);
-        }
-
-
+        Feedback? feedback = HttpContext.Session.GetObject<Feedback>(KeyName);
         ViewData["Title"] = "Eingabe";
         return View(feedback);
     }
@@ -42,25 +36,42 @@ public class FeedbackController : Controller
         if (!ModelState.IsValid)
             return View("Index", feedback);
 
-        if (!isDraw)
-        {
-            _context.Feedbacks.Add(feedback);
-            await _context.SaveChangesAsync();
-            HttpContext.Session.Remove(KeyName);
-            TempData["Name"] = feedback.Name;
-
-            return RedirectToAction("ThankYou");
-        }
-
         if (isDraw)
         {
-            string json = JsonSerializer.Serialize(feedback);
-            HttpContext.Session.SetString(KeyName, json);
-
+            HttpContext.Session.SetObject(KeyName, feedback);
             return RedirectToAction("Index", feedback);
         }
 
-        return View();
+        await AddDocs(feedback);
+
+        _context.Feedbacks.Add(feedback);
+        await _context.SaveChangesAsync();
+        HttpContext.Session.Remove(KeyName);
+        TempData["Name"] = feedback.Name;
+
+        return RedirectToAction("ThankYou");
+    }
+
+    private static async Task AddDocs(Feedback feedback)
+    {
+        if (feedback.DocsFromWeb == null)
+            return;
+
+        foreach (var file in feedback.DocsFromWeb)
+        {
+            if (file == null || file.Length <= 0)
+                continue;
+
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+
+            var doc = new Doc
+            {
+                Document = ms.ToArray(),
+                Extension = Path.GetExtension(file.FileName).ToLower()
+            };
+            feedback.Documents.Add(doc);
+        }
     }
 
     public IActionResult ThankYou()

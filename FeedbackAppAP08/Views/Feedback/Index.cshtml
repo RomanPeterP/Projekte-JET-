@@ -2,7 +2,7 @@
 
 <h1>Geben Sie Ihr Feedback ab</h1>
 
-<form asp-action="Submit" method="post">
+<form asp-action="Submit" method="post" enctype="multipart/form-data">
 	<div>
 		<input asp-for="Name" placeholder="@nameof(Model.Name)" />
 		<span asp-validation-for="Name" class="text-danger"></span>
@@ -32,7 +32,8 @@
 	</div>
 	<div>In welchem Land leben Sie?</div>
 	<select asp-for="Country" asp-items="ViewBag.Countries" class="form-control"></select>
-	<span asp-validation-for="Country" class="text-danger"></span><br />
+	<span asp-validation-for="Country" class="text-danger"></span>
+	<input type="file" asp-for="DocsFromWeb" formenctype="multipart/form-data" multiple /><br />
 	<button type="submit">Absenden</button>&nbsp;<button type="submit" formaction="/Feedback/Submit?isDraw=true">Entwurf speichern</button>
 </form>
 <br />
