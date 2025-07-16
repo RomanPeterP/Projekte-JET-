@@ -47,6 +47,22 @@ namespace TRSAP11.Logic
             return response;
         }
 
+        public Response Delete(int id)
+        {
+            var response = new Response(Enums.StatusCode.Error);
+            RestaurantRepository.Delete(id);
+            response.StatusCode = Enums.StatusCode.Success;
+            return response;
+        }
+
+        public Response Update(Restaurant restaurnat)
+        {
+            var response = new Response(Enums.StatusCode.Error);
+            RestaurantRepository.Update(restaurnat);
+            response.StatusCode = Enums.StatusCode.Success;
+            return response;
+        }
+
         private bool IsExists(Restaurant restaurnat)
         {
             if (RestaurantRepository.Any)

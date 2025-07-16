@@ -8,7 +8,9 @@ namespace TRSAP11
         {
 
             Uebungen.AddRestaurant();
-            
+            Uebungen.DeleteRestaurant();
+            Uebungen.UpdateRestaurant();
+
             // Uebungen.Polymorphie();
 
             //Uebungen.Generics();

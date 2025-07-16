@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TRSAP11.Data;
 using TRSAP11.Logic;
 using TRSAP11.Models;
 
@@ -47,69 +48,26 @@ namespace TRSAP11
 
             else
                 Console.WriteLine("Fehler: " + response.Message);
-
-
-
-            //    // Grundstammdaten
-            //    var restaurant = new Restaurant()
-            //    {
-            //        Name = "Musil",
-            //        ContactInfo = new ContactInfo
-            //        {
-            //            Email = "musil@musil.at",
-            //            PhoneNumber = "1234567890"
-            //        },
-            //        PostalCode = "1140",
-            //        City = "Wien",
-            //        StreetHouseNr = "Braillestr. 12",
-            //        Country = Country.AT
-            //    };
-
-            //    // Stammdaten Sesseln
-            //    restaurant.Tables = new List<Table>()
-            //    {
-            //        new Table
-            //            {
-            //            TableNumber = "TI5656",
-            //            NumberOfSeats = 5,
-            //            Restaurant = restaurant
-            //            },
-            //        new Table
-            //            {
-            //            TableNumber = "TAX7878",
-            //            NumberOfSeats = 6,
-            //            Restaurant = restaurant
-            //            }
-            //    };
-
-            //    // Bewegungsdaten (Resevierungen)
-
-            //    restaurant.Reservations = new List<Reservation>();
-
-            //    var reservation1 = new Reservation
-            //    {
-            //        Name = "Tobias",
-            //        ContactInfo = new ContactInfo
-            //        {
-            //            Email = "tobias@tobias.at",
-            //            PhoneNumber = "956565656"
-            //        },
-            //        NumberOfGuests = 5,
-            //        Restaurant = restaurant,
-            //        Date = new DateOnly(2025, 04, 27),
-            //        Time = ReservationTime.T2130,
-            //        AdditionalMessage = "Hallo, wir kommen..."
-            //    };
-
-            //    restaurant.Reservations.Add(reservation1);
-
-            //    // Restaurant-Mitarbeiter ordnet einer Resevierung einen Tisch zu
-            //    restaurant.Reservations[0].Table = restaurant.Tables[0];
-
-            //    // Restaurant-Mitarbeiter sezt den Status der Reservierung auf "reserverd"
-            //    restaurant.Reservations[0].ReservationStatus = ReservationStatus.Reserved;
-            //}
         }
+
+        public static void DeleteRestaurant()
+        {
+            var restaurantLogic = new RestaurantLogic();
+            var restuarant = RestaurantData.RestaurantsList.FirstOrDefault();
+            if (restuarant != null)
+                restaurantLogic.Delete(restuarant.RestaurantId);
+        }
+
+        public static void UpdateRestaurant()
+        {
+            var restuarant = RestaurantData.RestaurantsList.FirstOrDefault();
+            if (restuarant == null)
+                return;
+            restuarant.Name = "Neuer Name";
+            var restaurantLogic = new RestaurantLogic();
+            restaurantLogic.Update(restuarant);
+        }
+
 
         public static void Polymorphie()
         {
@@ -134,10 +92,10 @@ namespace TRSAP11
             tableList.Display();
 
             var guestList = new ManagementList<Reservation>();
-            
+
             guestList.Add(new DefaultReservation { Name = "Nikolaus", Date = new DateOnly(2025, 12, 12), Time = new TimeOnly(19, 15) });
             guestList.Add(new VipReservation { Name = "Erwin", Date = new DateOnly(2025, 6, 9), Time = new TimeOnly(17, 30) });
-            
+
             guestList.Display();
 
         }
