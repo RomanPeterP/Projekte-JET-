@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.RegularExpressions;
 using TableReservationSystem.Models;
@@ -85,6 +86,27 @@ namespace TableReservationSystem.Logic
             return _response;
         }
 
+        public IResponse<IRestaurant> GetRestaurant(int restaurantId)
+        {
+            try
+            {
+                var result = _repository.Get(restaurantId);
+                if (result != null)
+                    _response.Data = new List<IRestaurant>() { result };
+                _response.StatusCode = Enums.StatusCode.Success;
+            }
+            catch (Exception ex)
+            {
+                _response.Message = ex.Message;
+            }
+            return _response;
+        }
+
+
+
+
+
+
         private bool IsExists(IRestaurant restaurant)
         {
             if (_repository.Any)
@@ -144,5 +166,7 @@ namespace TableReservationSystem.Logic
 
             return (stringBuilder.Length == 0);
         }
+
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Identity.Client;
 using TableReservationSystem.Models;
 using TableReservationSystem.Models.Interfaces;
 using TableReservationSystem.Viewmodels;
@@ -10,6 +11,8 @@ namespace TableReservationSystemWeb.Controllers
     [Authorize(Roles = "Admin")]
     public class RestaurantController : Controller
     {
+
+
         private readonly IMiscLogic _misclogic;
         private readonly IRestaurantLogic _restaurantlogic;
         private readonly IRestaurantMapper _mapper;
@@ -39,7 +42,7 @@ namespace TableReservationSystemWeb.Controllers
         {
             var searchCriteria = _mapper.Map(inViewModel?.RestaurantSearchCriteriaViewModel);
             var listResponse = _restaurantlogic.Data(searchCriteria);
-            var outViewmodel = _mapper.Map(listResponse.Data, listResponse.Message, inViewModel); 
+            var outViewmodel = _mapper.Map(listResponse.Data, listResponse.Message, inViewModel);
             return View(outViewmodel);
         }
 
@@ -47,11 +50,11 @@ namespace TableReservationSystemWeb.Controllers
         [HttpPost]
         public IActionResult Register(RestaurantFormViewModel viewmodel)
         {
-            viewmodel = GetRestaurantFormViewModel(viewmodel);  
+            viewmodel = GetRestaurantFormViewModel(viewmodel);
             if (ModelState.IsValid)
             {
                 var logicResponse = _restaurantlogic.Register(_mapper.Map(viewmodel));
-                if(logicResponse.StatusCode == Enums.StatusCode.Success)
+                if (logicResponse.StatusCode == Enums.StatusCode.Success)
                     return RedirectToAction("List");
                 viewmodel.Message = logicResponse.Message;
             }
@@ -60,7 +63,7 @@ namespace TableReservationSystemWeb.Controllers
 
         private RestaurantFormViewModel GetRestaurantFormViewModel(RestaurantFormViewModel? viewmodel)
         {
-            if(viewmodel == null)
+            if (viewmodel == null)
                 viewmodel = new RestaurantFormViewModel();
 
             var countryList = _misclogic.CountriesData().Data
@@ -72,6 +75,25 @@ namespace TableReservationSystemWeb.Controllers
             countryList.Insert(0, new SelectListItem() { Value = "", Text = "" });
             viewmodel.CountryList = countryList;
             return viewmodel;
+        }
+
+
+        public IActionResult Details([FromRoute] int id)
+        {
+            //var geholtesRestaurant = _restaurantlogic.GetRestaurant(id);
+
+            //if (geholtesRestaurant == null) return NotFound();
+
+            //var outViewmodel = _mapper.Map(geholtesRestaurant.Data, geholtesRestaurant.Message);
+            var vm = new RestaurantViewModel()
+            {
+                AddressSummary = "Hauptstraße 11, AT-1140 Wien",
+                Email = "aaa@bbb.cc",
+                Name = "Restaurant Musil",
+                PhoneNumber = "1234567890",
+                RestaurantId = id
+            };
+            return View(vm);
         }
     }
 }

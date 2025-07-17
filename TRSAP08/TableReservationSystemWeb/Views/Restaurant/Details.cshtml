@@ -1,0 +1,35 @@
+﻿@model RestaurantViewModel
+
+<h2>Details</h2>
+
+<div>
+	<h3>Restaurant</h3>
+<br />
+<dl>
+	<dt class="col-sm-2">
+		@Html.DisplayNameFor(Model=>Model.Name)
+	</dt>
+	<dd class="col-sm-10">
+		@Html.DisplayFor(Model=> Model.Name)
+	</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.Email)
+		</dt>
+		<dd class="col-sm-10">
+			<a href="mailto:@Html.DisplayFor(Model=>Model.Email)">@Html.DisplayFor(Model => Model.Email)</a>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.PhoneNumber)
+		</dt>
+		<dd class="col-sm-10">
+			<a href="tel:@Html.DisplayFor(Model=>Model.PhoneNumber)">@Html.DisplayFor(Model => Model.PhoneNumber)</a>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.AddressSummary)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(Model => Model.AddressSummary)
+		</dd>
+		
+</dl>
+</div>

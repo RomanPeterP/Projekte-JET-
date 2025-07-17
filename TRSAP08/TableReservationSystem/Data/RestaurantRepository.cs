@@ -50,6 +50,12 @@ namespace TableReservationSystem.Data
             get { return _context.Restaurant.AsNoTracking().Include(c => c.ContactInfo); }
         }
 
+        public IRestaurant? Get(int id)
+        {
+            return _context.Restaurant.FirstOrDefault(r=>r.RestaurantId == id );
+        }
+
+
         public IEnumerable<IRestaurant> SelectFiltered(string[] words)
         {
             return _context.Restaurant
