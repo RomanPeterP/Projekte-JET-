@@ -10,7 +10,6 @@ namespace TableReservationSystemWeb
     {
         public static void Main(string[] args)
         {
-            var sqlServerInstanceName = Environment.GetEnvironmentVariable("SqlServerInstanceName", EnvironmentVariableTarget.User);
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
@@ -19,8 +18,7 @@ namespace TableReservationSystemWeb
             builder.Services.AddScoped<IRestaurantMapper, RestaurantMapper>();
 
             builder.Services.AddDbContext<TableReservationSystemContext>(options =>
-                options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")
-                .Replace("@SqlServerInstanceName", sqlServerInstanceName)));
+                options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")));
                   
             builder.Services.AddScoped<TableReservationSystemContext, TableReservationSystemContext>();
             builder.Services.AddScoped<IRestaurant, Restaurant>();

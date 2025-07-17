@@ -32,6 +32,8 @@ public partial class TableReservationSystemContext : DbContext
 
     public virtual DbSet<UpcomingReservation> UpcomingReservation { get; set; }
 
+    public virtual DbSet<Doc> Docs { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(Config.ConfigItems.GetConnectionString("default"));
 
@@ -142,6 +144,21 @@ public partial class TableReservationSystemContext : DbContext
         modelBuilder.Entity<ReservationsFromDay>()
             .ToFunction("ReservationsFromDay")
             .HasNoKey();
+
+        modelBuilder.Entity<Doc>(entity =>
+        {
+            entity.HasKey(e => e.DocsId);
+            entity.Property(e => e.Extension)
+                .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.MimeType)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Restaurant).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.RestaurantId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
 
         OnModelCreatingPartial(modelBuilder);
     }

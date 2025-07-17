@@ -14,5 +14,6 @@
         int RestaurantId { get; set; }
         string StreetHouseNr { get; set; }
         ICollection<Table> Tables { get; set; }
+        ICollection<Doc> Documents { get; set; }
     }
 }

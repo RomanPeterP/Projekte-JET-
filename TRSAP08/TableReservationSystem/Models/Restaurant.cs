@@ -27,4 +27,5 @@ public class Restaurant : IRestaurant
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
     public virtual ICollection<Table> Tables { get; set; } = new List<Table>();
+    public virtual ICollection<Doc> Documents { get; set; } = new List<Doc>();
 }
