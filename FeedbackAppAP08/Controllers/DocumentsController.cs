@@ -5,26 +5,44 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 
 [Authorize(Roles = "Admin")]
 public class DocumentsController : Controller
 {
     private readonly FeedbackDbContext _context;
-    public DocumentsController(FeedbackDbContext context)
+    private readonly IMemoryCache _cache;
+    public DocumentsController(FeedbackDbContext context, IMemoryCache cache)
     {
         _context = context;
+        _cache = cache;
     }
 
     public async Task<IActionResult> Image(int id, bool isThumbnail)
     {
-        var doc = await _context.Docs.FindAsync(id);
-        if (doc?.Document == null)
-            return NotFound();
-        var breite = isThumbnail ? 100 : 1000;
-        var resizedImage = ResizeImage(doc.Document, breite);
+        var cacheKey = $"doc_{id}_{(isThumbnail ? "thumb" : "full")}";
 
-        return File(resizedImage, doc.MimeType);
+        if (!_cache.TryGetValue(cacheKey, out (byte[] Data, string MimeType) cachedImage))
+        {
+            var doc = await _context.Docs.FindAsync(id);
+            if (doc?.Document == null)
+                return NotFound();
+
+            var breite = isThumbnail ? 100 : 1000;
+            var resizedImage = ResizeImage(doc.Document, breite);
+
+            cachedImage = (resizedImage, doc.MimeType);
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromMinutes(30)); 
+
+            _cache.Set(cacheKey, cachedImage, cacheEntryOptions);
+        }
+
+        return File(cachedImage.Data, cachedImage.MimeType);
     }
+
 
     public async Task<IActionResult> Doc(int id)
     {

@@ -12,6 +12,7 @@ builder.Services.AddDbContext<FeedbackDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
     .Replace("@SqlServerInstanceName", sqlServerInstanceName)));
 
+builder.Services.AddMemoryCache();
 builder.Services.AddAuthentication("FeedbackCookieAuth")
     .AddCookie("FeedbackCookieAuth", options =>
     {
