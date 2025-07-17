@@ -77,23 +77,12 @@ namespace TableReservationSystemWeb.Controllers
             return viewmodel;
         }
 
-
         public IActionResult Details([FromRoute] int id)
         {
-            //var geholtesRestaurant = _restaurantlogic.GetRestaurant(id);
-
-            //if (geholtesRestaurant == null) return NotFound();
-
-            //var outViewmodel = _mapper.Map(geholtesRestaurant.Data, geholtesRestaurant.Message);
-            var vm = new RestaurantViewModel()
-            {
-                AddressSummary = "Hauptstraße 11, AT-1140 Wien",
-                Email = "aaa@bbb.cc",
-                Name = "Restaurant Musil",
-                PhoneNumber = "1234567890",
-                RestaurantId = id
-            };
-            return View(vm);
+            var geholtesRestaurant = _restaurantlogic.GetRestaurant(id)?.Data?.First();
+            if (geholtesRestaurant == null) return NotFound();
+            var viewmodel = _mapper.Map(geholtesRestaurant);
+            return View(viewmodel);
         }
     }
 }

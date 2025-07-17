@@ -13,12 +13,14 @@ namespace TableReservationSystemWeb
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllersWithViews();
+            var sqlServerInstanceName = Environment.GetEnvironmentVariable("SqlServerInstanceName", EnvironmentVariableTarget.User);
             builder.Services.AddScoped<IRestaurantLogic, RestaurantLogic>();
             builder.Services.AddScoped<IMiscLogic, MiscLogic>();
             builder.Services.AddScoped<IRestaurantMapper, RestaurantMapper>();
 
             builder.Services.AddDbContext<TableReservationSystemContext>(options =>
-                options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")));
+                options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")
+                .Replace("@SqlServerInstanceName", sqlServerInstanceName)));
                   
             builder.Services.AddScoped<TableReservationSystemContext, TableReservationSystemContext>();
             builder.Services.AddScoped<IRestaurant, Restaurant>();

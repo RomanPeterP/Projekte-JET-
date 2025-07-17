@@ -35,7 +35,11 @@ public partial class TableReservationSystemContext : DbContext
     public virtual DbSet<Doc> Docs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(Config.ConfigItems.GetConnectionString("default"));
+    {
+        var sqlServerInstanceName = Environment.GetEnvironmentVariable("SqlServerInstanceName", EnvironmentVariableTarget.User);
+        optionsBuilder.UseSqlServer(Config.ConfigItems.GetConnectionString("default")
+            .Replace("@SqlServerInstanceName", sqlServerInstanceName));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -15,11 +15,13 @@ namespace TableReservationSystem
         static void Main(string[] args)
         {
             // Dependency Injection setzen
+            var sqlServerInstanceName = Environment.GetEnvironmentVariable("SqlServerInstanceName", EnvironmentVariableTarget.User);
             using IHost host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
                     services.AddDbContext<TableReservationSystemContext>(options =>
-                        options.UseSqlServer(Config.ConfigItems.GetConnectionString("Default")));
+                        options.UseSqlServer(Config.ConfigItems.GetConnectionString("Default").
+                        Replace("@SqlServerInstanceName", sqlServerInstanceName)));
 
                     services.AddScoped<TableReservationSystemContext, TableReservationSystemContext>();
                     services.AddScoped<IRestaurant, Restaurant>();
