@@ -1,3 +1,4 @@
+using FeedbackAppAP08.Data;
 using FeedbackAppAP08.Logic;
 using FeedbackAppAP08.Models;
 using FeedbackAppAP08.Viewmodels;
@@ -5,9 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 public class FeedbackController : Controller
@@ -23,7 +26,6 @@ public class FeedbackController : Controller
     public IActionResult Index()
     {
         ViewBagCountries();
-
         Feedback? feedback = HttpContext.Session.GetObject<Feedback>(KeyName);
         ViewData["Title"] = "Eingabe";
         return View(feedback);
@@ -52,26 +54,16 @@ public class FeedbackController : Controller
         return RedirectToAction("ThankYou");
     }
 
-    private static async Task AddDocs(Feedback feedback)
+    [Authorize(Roles = "Admin")]
+    public IActionResult Details(int id)
     {
-        if (feedback.DocsFromWeb == null)
-            return;
-
-        foreach (var file in feedback.DocsFromWeb)
-        {
-            if (file == null || file.Length <= 0)
-                continue;
-
-            using var ms = new MemoryStream();
-            await file.CopyToAsync(ms);
-
-            var doc = new Doc
-            {
-                Document = ms.ToArray(),
-                Extension = Path.GetExtension(file.FileName).ToLower()
-            };
-            feedback.Documents.Add(doc);
-        }
+        var viewmodel = new FeedbackDetailsViewModel();
+        var feedback = _context.Feedbacks.Include(f => f.Documents).FirstOrDefault(f => f.FeedbackId == id);
+        if (feedback == null)
+            return RedirectToAction("List");
+        viewmodel.Feedback = feedback;
+        GenerateDocHtml(viewmodel, feedback);
+        return View(viewmodel);
     }
 
     public IActionResult ThankYou()
@@ -136,5 +128,86 @@ public class FeedbackController : Controller
             new SelectListItem { Value = "DE", Text = "Deutschland" },
             new SelectListItem { Value = "CH", Text = "Schweiz" },
         };
+    }
+
+    private void GenerateDocHtml(FeedbackDetailsViewModel viewmodel, Feedback feedback)
+    {
+        if (feedback.Documents.Count == 0)
+            return;
+
+        var tagsList = new List<string>();
+        foreach (var document in feedback.Documents)
+        {
+            TagBuilder tagBuilder;
+            switch (document.Extension)
+            {
+                case FileExtensions.Jpg:
+                case FileExtensions.Png:
+                case FileExtensions.Jpeg:
+                case FileExtensions.Bmp:
+                case FileExtensions.Gif:
+                case FileExtensions.Webp:
+                    tagBuilder = new TagBuilder("img");
+                    tagBuilder.Attributes.Add("src", Url.Action("Image", "Documents",
+                        new { id = document.DocsId, isThumbnail = true }));
+                    tagBuilder.Attributes.Add("onclick", "window.open('" + Url.Action("Image", "Documents",
+                        new { id = document.DocsId, isThumbnail = false }) + "', 'bildgross', 'popup')");
+                    WriteHtmlInList(tagsList, tagBuilder);
+                    break;
+
+                case FileExtensions.Mp4:
+                    tagBuilder = new TagBuilder("video");
+                    tagBuilder.Attributes.Add("width", "640");
+                    tagBuilder.Attributes.Add("height", "360");
+                    tagBuilder.Attributes.Add("controls", "controls");
+                    var source = new TagBuilder("source");
+                    source.Attributes.Add("src", Url.Action("Mp4", "Documents", new { id = document.DocsId }));
+                    source.Attributes.Add("type", document.MimeType);
+                    tagBuilder.InnerHtml.AppendHtml(source);
+                    WriteHtmlInList(tagsList, tagBuilder);
+                    break;
+
+                default:
+                    tagBuilder = new TagBuilder("a");
+                    tagBuilder.Attributes.Add("href", Url.Action("Doc", "Documents",
+                        new { id = document.DocsId }));
+                    tagBuilder.Attributes.Add("target", "_blank");
+                    tagBuilder.InnerHtml.Append("Dokument");
+                    WriteHtmlInList(tagsList, tagBuilder);
+                    break;
+            }
+        }
+        viewmodel.DocsTags = tagsList;
+    }
+
+    private static void WriteHtmlInList(List<string> tagsList, TagBuilder tagBuilder)
+    {
+        using (var writer = new StringWriter())
+        {
+            tagBuilder.WriteTo(writer, HtmlEncoder.Default);
+            tagsList.Add(writer.ToString());
+        };
+    }
+    private static async Task AddDocs(Feedback feedback)
+    {
+        if (feedback.DocsFromWeb == null)
+            return;
+
+        foreach (var file in feedback.DocsFromWeb)
+        {
+            if (file == null || file.Length <= 0)
+                continue;
+
+            using var ms = new MemoryStream();
+            await file.CopyToAsync(ms);
+
+            var doc = new Doc
+            {
+                Document = ms.ToArray(),
+                Extension = Path.GetExtension(file.FileName).ToLower(),
+                MimeType = file.ContentType
+            };
+            feedback.Documents.Add(doc);
+        }
     }
 }

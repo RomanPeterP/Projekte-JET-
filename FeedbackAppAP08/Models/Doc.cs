@@ -10,5 +10,7 @@ public partial class Doc
 
     public string? Extension { get; set; }
 
+    public string MimeType { get; set; } = null!;
+
     public virtual Feedback Feedback { get; set; } = null!;
 }

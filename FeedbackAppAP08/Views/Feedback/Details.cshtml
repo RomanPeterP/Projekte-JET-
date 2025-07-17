@@ -1,0 +1,59 @@
+@model FeedbackDetailsViewModel
+<h2>Feedback Details</h2>
+
+<div>
+	<h4>Feedback</h4>
+	<hr />
+	<dl class="row">
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Feedback.FeedbackId)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Feedback.FeedbackId)
+		</dd>
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Feedback.Name)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Feedback.Name)
+		</dd>
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Feedback.Message)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Feedback.Message)
+		</dd>
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Feedback.Ratinggrade)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Feedback.Ratinggrade)
+		</dd>
+
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(model => model.Feedback.Country)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(model => model.Feedback.Country)
+		</dd>
+	</dl>
+</div>
+<div>
+	@if (Model?.DocsTags?.Count > 0)
+	{
+		<ol>
+			@foreach (var docTag in Model.DocsTags)
+			{
+				<li>@Html.Raw(docTag)</li>
+			}
+		</ol>
+	}
+
+	<div>
+		<a asp-action="List">Zurück zur Liste</a>
+	</div>
+</div>
+

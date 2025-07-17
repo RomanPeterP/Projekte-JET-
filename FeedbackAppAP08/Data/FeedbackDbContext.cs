@@ -3,8 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class FeedbackDbContext : DbContext
 {
-    public FeedbackDbContext(DbContextOptions<FeedbackDbContext> options)
-        : base(options) { }
+    public FeedbackDbContext(DbContextOptions<FeedbackDbContext> options): base(options) { }
 
     public DbSet<Feedback> Feedbacks { get; set; }
     public virtual DbSet<Doc> Docs { get; set; }
@@ -25,6 +24,9 @@ public class FeedbackDbContext : DbContext
             entity.HasKey(e => e.DocsId);
             entity.Property(e => e.Extension)
                 .HasMaxLength(10)
+                .IsUnicode(false);
+            entity.Property(e => e.MimeType)
+                .HasMaxLength(100)
                 .IsUnicode(false);
 
             entity.HasOne(d => d.Feedback).WithMany(p => p.Documents)

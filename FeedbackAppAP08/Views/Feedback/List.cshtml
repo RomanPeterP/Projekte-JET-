@@ -1,5 +1,4 @@
-﻿@using FeedbackAppAP08.Viewmodels
-@model FeedbackListViewModel
+﻿@model FeedbackListViewModel
 
 <h2>Liste mit abgegebenen Feedbacks</h2>
 <form asp-action="List" method="get">
@@ -16,5 +15,6 @@
 		<div>@feedback.Message</div>
 		<div>Bewertung: @feedback.Ratinggrade</div>
 		<div>Eingereicht am: @feedback.SubmittedAt.ToString("dd.MM.yyyy HH:mm")</div>
+		<a asp-action="Details" asp-route-id="@feedback.FeedbackId">Details</a>
 	</div>
 }
