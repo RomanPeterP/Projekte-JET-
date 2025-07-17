@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using TableReservationSystem.Logic;
 using Microsoft.Extensions.Configuration;
 using TableReservationSystem.Models.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace TableReservationSystem
 {
@@ -14,12 +15,13 @@ namespace TableReservationSystem
         static void Main(string[] args)
         {
             // Dependency Injection setzen
-
+            var sqlServerInstanceName = Environment.GetEnvironmentVariable("SqlServerInstanceName", EnvironmentVariableTarget.User);
             using IHost host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
                     services.AddDbContext<TableReservationSystemContext>(options =>
-                        options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")));
+                        options.UseSqlServer(Config.ConfigItems.GetConnectionString("Default")
+                        .Replace("@SqlServerInstanceName", sqlServerInstanceName)));
 
                     services.AddScoped<TableReservationSystemContext, TableReservationSystemContext>();
                     services.AddScoped<IRestaurant, Restaurant>();
