@@ -3,7 +3,7 @@
 <div class="form-container">
 	<h1>Restaurant eingeben / bearbeiten</h1>
 
-	<form asp-action="Register" method="post">
+	<form asp-action="Register" method="post" enctype="multipart/form-data">
 		<div class="text-danger">@Model?.Message</div>
 		<div class="form-group">
 			<label asp-for="Name"></label>
@@ -51,7 +51,7 @@
 			<input asp-for="Activ" type="checkbox" class="form-check-input" />
 			<label asp-for="Activ" class="form-check-label"></label>
 		</div>
-
+		<input type="file" name="documents" multiple />
 		<button type="submit" class="btn btn-primary">Speichern</button>
 	</form>
 </div>

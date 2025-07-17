@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace TableReservationSystem.Viewmodels
@@ -46,5 +47,6 @@ namespace TableReservationSystem.Viewmodels
         [Display(Name = "E-Mail-Adresse")]
         public string? Email { get; set; }
         public IEnumerable<SelectListItem>? CountryList { get; set; }
+        public IEnumerable<IFormFile>? Documents { get; set; }
     }
 }

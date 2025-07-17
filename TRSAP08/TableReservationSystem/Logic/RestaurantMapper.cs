@@ -1,4 +1,5 @@
-﻿using TableReservationSystem.Models;
+﻿using Microsoft.AspNetCore.Http;
+using TableReservationSystem.Models;
 using TableReservationSystem.Models.Interfaces;
 using TableReservationSystem.Viewmodels;
 
@@ -45,9 +46,37 @@ namespace TableReservationSystem.Logic
                 ContactInfo = new ContactInfo
                 {
                     PhoneNumber = viewmodel.PhoneNumber ?? string.Empty,
-                    Email = viewmodel.Email ?? string.Empty,
-                }
+                    Email = viewmodel.Email ?? string.Empty
+                },
+                Documents = GetDocs(viewmodel.Documents)
             };
+        }
+
+        private ICollection<Doc>? GetDocs(IEnumerable<IFormFile>? documents)
+        {
+
+            if (documents == null)
+                return null;
+
+            var docs = new List<Doc>();
+
+            foreach (var file in documents)
+            {
+                if (file == null || file.Length <= 0)
+                    continue;
+
+                using var ms = new MemoryStream();
+                file.CopyTo(ms);
+
+                var doc = new Doc
+                {
+                    Document = ms.ToArray(),
+                    Extension = Path.GetExtension(file.FileName).ToLower(),
+                    MimeType = file.ContentType
+                };
+                docs.Add(doc);
+            }
+            return docs;
         }
 
         public RestaurantListViewModel Map(IEnumerable<IRestaurant>? restaurants, string? message,
