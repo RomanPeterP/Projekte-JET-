@@ -52,7 +52,7 @@ namespace TableReservationSystem.Data
 
         public IRestaurant? Get(int id)
         {
-            return _context.Restaurant.FirstOrDefault(r=>r.RestaurantId == id );
+            return _context.Restaurant.AsNoTracking().Include(c=>c.ContactInfo).FirstOrDefault(r=>r.RestaurantId == id );
         }
 
 

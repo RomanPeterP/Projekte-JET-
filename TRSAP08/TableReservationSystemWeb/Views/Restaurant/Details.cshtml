@@ -3,15 +3,21 @@
 <h2>Details</h2>
 
 <div>
-	<h3>Restaurant</h3>
-<br />
-<dl>
-	<dt class="col-sm-2">
-		@Html.DisplayNameFor(Model=>Model.Name)
-	</dt>
-	<dd class="col-sm-10">
-		@Html.DisplayFor(Model=> Model.Name)
-	</dd>
+	<h1>Restaurant</h1>
+	<br />
+	<dl>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.RestaurantId)
+		</dt>
+		<dd class="col-sm-10">
+			<h3>@Html.DisplayFor(Model => Model.RestaurantId)</h3>
+		</dd>
+		<dt class="col-sm-2">
+			@Html.DisplayNameFor(Model => Model.Name)
+		</dt>
+		<dd class="col-sm-10">
+			@Html.DisplayFor(Model => Model.Name)
+		</dd>
 		<dt class="col-sm-2">
 			@Html.DisplayNameFor(Model => Model.Email)
 		</dt>
@@ -30,6 +36,6 @@
 		<dd class="col-sm-10">
 			@Html.DisplayFor(Model => Model.AddressSummary)
 		</dd>
-		
-</dl>
+
+	</dl>
 </div>
