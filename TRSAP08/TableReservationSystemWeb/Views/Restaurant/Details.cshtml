@@ -37,5 +37,15 @@
 			@Html.DisplayFor(Model => Model.AddressSummary)
 		</dd>
 
+		@if (Model != null && Model.DocsTags != null)
+		{
+			foreach (var image in Model.DocsTags)
+			{
+				<div>
+					@Html.Raw(image)
+				</div>
+			}
+		}
+
 	</dl>
 </div>
