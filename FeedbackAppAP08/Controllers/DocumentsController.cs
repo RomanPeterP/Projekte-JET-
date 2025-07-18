@@ -48,11 +48,23 @@ public class DocumentsController : Controller
 
     public async Task<IActionResult> Doc(int id)
     {
-        var doc = await _context.Docs.FindAsync(id);
-        if (doc?.Document == null)
-            return NotFound();
+        var cacheKey = $"doc_{id}";
 
-        return File(doc.Document, doc.MimeType, "Dokument" + doc.Extension);
+        if (!_cache.TryGetValue(cacheKey, out (byte[] Data, string MiMeType, string? Extension) cachedDoc))
+        {
+            var doc = await _context.Docs.FindAsync(id);
+            if (doc?.Document == null)
+                return NotFound();
+
+            cachedDoc = (doc.Document, doc.MimeType, doc?.Extension);
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                .SetSlidingExpiration(TimeSpan.FromMinutes(30));
+
+            _cache.Set(cacheKey, cachedDoc, cacheEntryOptions);
+        }
+
+        return File(cachedDoc.Data, cachedDoc.MiMeType, "Dokument" + cachedDoc.Extension);
     }
 
     public async Task<IActionResult> Mp4(int id)
