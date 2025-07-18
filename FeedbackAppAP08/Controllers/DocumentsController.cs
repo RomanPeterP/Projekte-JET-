@@ -22,7 +22,7 @@ public class DocumentsController : Controller
     public async Task<IActionResult> Image(int id, bool isThumbnail)
     {
         
-        // TEST
+        // TEST sdfcdsafdsaf
         var cacheKey = $"doc_{id}_{(isThumbnail ? "thumb" : "full")}";
 
         if (!_cache.TryGetValue(cacheKey, out (byte[] Data, string MimeType) cachedImage))
