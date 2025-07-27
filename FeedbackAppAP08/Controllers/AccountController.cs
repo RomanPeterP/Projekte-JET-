@@ -66,7 +66,8 @@ namespace FeedbackAppAP08.Controllers
             ViewBag.Error = "Login fehlgeschlagen!";
             return View();
         }
-
+        
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("FeedbackCookieAuth");
