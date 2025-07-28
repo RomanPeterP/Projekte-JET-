@@ -69,7 +69,7 @@ public class Trsap09v2Context : DbContext
             entity.HasOne(d => d.ContactInfo).WithMany(p => p.Restaurants)
                 .HasForeignKey(d => d.ContactInfoId)
                 .OnDelete(DeleteBehavior.NoAction);
-            entity.HasOne(d => d.Countries).WithMany(p => p.Restaurants)
+            entity.HasOne(d => d.Country).WithMany(p => p.Restaurants)
                 .HasForeignKey(d => d.CountryCode)
                 .OnDelete(DeleteBehavior.NoAction);
         });
