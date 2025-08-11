@@ -34,7 +34,7 @@ namespace TRSAP12
             {
                 Console.WriteLine(reservation.GetInfo());
             }
- // TEst auf n. Rechner
+ // TEst auf n. Rechnererew
         }
-    }
+    }w
 }
