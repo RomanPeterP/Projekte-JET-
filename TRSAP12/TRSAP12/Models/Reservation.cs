@@ -11,5 +11,10 @@
         public Restaurant Restaurant { get; set; } = null!;
         public ContactInfo ContactInfo { get; set; } = null!;
         public Table? Table { get; set; }
+
+        public virtual string GetInfo()
+        {
+            return "Allgemeine (unspezifische) Reservation";
+        }
     }
 }
