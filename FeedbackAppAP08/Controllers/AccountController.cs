@@ -67,7 +67,7 @@ namespace FeedbackAppAP08.Controllers
             return View();
         }
         
-        [HttpGet] // Neu
+        [HttpGet] // Neu sdsd
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync("FeedbackCookieAuth");
