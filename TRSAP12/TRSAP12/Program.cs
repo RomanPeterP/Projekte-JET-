@@ -29,12 +29,11 @@ namespace TRSAP12
             reservations.Add(vr);
             reservations.Add(fr);
 
-
+            // Schleife ddd dsfds
             foreach (var reservation in reservations)
             {
                 Console.WriteLine(reservation.GetInfo());
             }
- 
         }
     }
 }
