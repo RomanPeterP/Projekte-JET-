@@ -14,7 +14,7 @@ namespace TRSAP11.Data
                 string jsonString = File.ReadAllText(Filename);
                 try
                 {
-                    RestaurantsList = JsonSerializer.Deserialize<List<Restaurant>>("abc");
+                    RestaurantsList = JsonSerializer.Deserialize<List<Restaurant>>(jsonString);
                 }
                 catch (Exception ex)
                 {
