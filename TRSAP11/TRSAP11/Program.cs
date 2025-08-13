@@ -6,11 +6,16 @@ namespace TRSAP11
     {
         static void Main(string[] args)
         {
-
-            Uebungen.AddRestaurant();
-            Uebungen.DeleteRestaurant();
-            Uebungen.UpdateRestaurant();
-
+            try
+            {
+                Uebungen.AddRestaurant();
+                Uebungen.DeleteRestaurant();
+                Uebungen.UpdateRestaurant();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             // Uebungen.Polymorphie();
 
             //Uebungen.Generics();
