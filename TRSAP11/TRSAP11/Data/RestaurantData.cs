@@ -12,7 +12,16 @@ namespace TRSAP11.Data
             if (File.Exists(Filename))
             {
                 string jsonString = File.ReadAllText(Filename);
-                RestaurantsList = JsonSerializer.Deserialize<List<Restaurant>>(jsonString);
+                try
+                {
+                    RestaurantsList = JsonSerializer.Deserialize<List<Restaurant>>(jsonString);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Fehler aufgetretten in Data " + ex.Message);
+                    throw;
+                }
+                
             }
         }
         public static List<Restaurant> RestaurantsList { get; set; }
