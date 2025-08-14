@@ -23,6 +23,45 @@ namespace TableReservationSystemWeb.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(b => string.Equals(b.UserName, model.UserName)
+                || string.Equals(b.Email, model.Email));
+
+            if (user != null)
+            {
+                ModelState.AddModelError("", "Username or Email already in use.");
+                return View(model);
+            }
+
+            var userRole = _context.Roles.FirstOrDefault(r => r.RoleName == "User");
+
+            if (userRole == null)
+            {
+                ModelState.AddModelError("", "User Role does not exist.");
+                return View(model);
+            }
+
+            user = new User()
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                Role = userRole
+            };
+
+            user.PasswordHash = _hasher.HashPassword(user, model.Password);
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Login");
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
