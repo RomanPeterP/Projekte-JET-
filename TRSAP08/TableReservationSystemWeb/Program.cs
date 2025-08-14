@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TableReservationSystem.Data;
 using TableReservationSystem.Logic;
@@ -17,7 +18,7 @@ namespace TableReservationSystemWeb
             builder.Services.AddScoped<IRestaurantLogic, RestaurantLogic>();
             builder.Services.AddScoped<IMiscLogic, MiscLogic>();
             builder.Services.AddScoped<IRestaurantMapper, RestaurantMapper>();
-
+            builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             builder.Services.AddDbContext<TableReservationSystemContext>(options =>
                 options.UseSqlServer(Config.ConfigItems.GetConnectionString("default")
                 .Replace("@SqlServerInstanceName", sqlServerInstanceName)));
