@@ -254,6 +254,24 @@ namespace TableReservationSystem.Migrations
                     b.ToTable("Restaurant");
                 });
 
+            modelBuilder.Entity("TableReservationSystem.Models.Role", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("TableReservationSystem.Models.Table", b =>
                 {
                     b.Property<string>("TableNumber")
@@ -307,6 +325,39 @@ namespace TableReservationSystem.Migrations
                     b.ToTable((string)null);
 
                     b.ToView("UpcomingReservation", (string)null);
+                });
+
+            modelBuilder.Entity("TableReservationSystem.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TableReservationSystem.Models.Doc", b =>
@@ -385,6 +436,17 @@ namespace TableReservationSystem.Migrations
                     b.Navigation("Restaurant");
                 });
 
+            modelBuilder.Entity("TableReservationSystem.Models.User", b =>
+                {
+                    b.HasOne("TableReservationSystem.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("TableReservationSystem.Models.ContactInfo", b =>
                 {
                     b.Navigation("Reservations");
@@ -414,6 +476,11 @@ namespace TableReservationSystem.Migrations
                     b.Navigation("Reservations");
 
                     b.Navigation("Tables");
+                });
+
+            modelBuilder.Entity("TableReservationSystem.Models.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("TableReservationSystem.Models.Table", b =>

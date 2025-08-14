@@ -12,15 +12,15 @@ using TableReservationSystem.Data;
 namespace TableReservationSystem.Migrations
 {
     [DbContext(typeof(TableReservationSystemContext))]
-    [Migration("20250417140800_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250814124920_Initial3")]
+    partial class Initial3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.3")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -64,6 +64,39 @@ namespace TableReservationSystem.Migrations
                     b.HasKey("CountryCode");
 
                     b.ToTable("Country");
+                });
+
+            modelBuilder.Entity("TableReservationSystem.Models.Doc", b =>
+                {
+                    b.Property<int>("DocsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocsId"));
+
+                    b.Property<byte[]>("Document")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Extension")
+                        .HasMaxLength(10)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DocsId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("Docs");
                 });
 
             modelBuilder.Entity("TableReservationSystem.Models.Reservation", b =>
@@ -155,6 +188,23 @@ namespace TableReservationSystem.Migrations
                     b.ToTable("ReservationTime");
                 });
 
+            modelBuilder.Entity("TableReservationSystem.Models.ReservationsFromDay", b =>
+                {
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RestaurantName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeOnly>("Time")
+                        .HasColumnType("time");
+
+                    b.ToTable((string)null);
+
+                    b.ToFunction("ReservationsFromDay");
+                });
+
             modelBuilder.Entity("TableReservationSystem.Models.Restaurant", b =>
                 {
                     b.Property<int>("RestaurantId")
@@ -207,6 +257,24 @@ namespace TableReservationSystem.Migrations
                     b.ToTable("Restaurant");
                 });
 
+            modelBuilder.Entity("TableReservationSystem.Models.Role", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("TableReservationSystem.Models.Table", b =>
                 {
                     b.Property<string>("TableNumber")
@@ -229,6 +297,81 @@ namespace TableReservationSystem.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Table");
+                });
+
+            modelBuilder.Entity("TableReservationSystem.Models.UpcomingReservation", b =>
+                {
+                    b.Property<string>("ContactName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReservationStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RestaurantName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TableNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeOnly>("Time")
+                        .HasColumnType("time");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("UpcomingReservation", (string)null);
+                });
+
+            modelBuilder.Entity("TableReservationSystem.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TableReservationSystem.Models.Doc", b =>
+                {
+                    b.HasOne("TableReservationSystem.Models.Restaurant", "Restaurant")
+                        .WithMany("Documents")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("TableReservationSystem.Models.Reservation", b =>
@@ -275,14 +418,14 @@ namespace TableReservationSystem.Migrations
                         .HasForeignKey("ContactInfoId")
                         .IsRequired();
 
-                    b.HasOne("TableReservationSystem.Models.Country", "CountryCodeNavigation")
+                    b.HasOne("TableReservationSystem.Models.Country", "Country")
                         .WithMany("Restaurants")
                         .HasForeignKey("CountryCode")
                         .IsRequired();
 
                     b.Navigation("ContactInfo");
 
-                    b.Navigation("CountryCodeNavigation");
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("TableReservationSystem.Models.Table", b =>
@@ -294,6 +437,17 @@ namespace TableReservationSystem.Migrations
                         .IsRequired();
 
                     b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("TableReservationSystem.Models.User", b =>
+                {
+                    b.HasOne("TableReservationSystem.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("TableReservationSystem.Models.ContactInfo", b =>
@@ -320,9 +474,16 @@ namespace TableReservationSystem.Migrations
 
             modelBuilder.Entity("TableReservationSystem.Models.Restaurant", b =>
                 {
+                    b.Navigation("Documents");
+
                     b.Navigation("Reservations");
 
                     b.Navigation("Tables");
+                });
+
+            modelBuilder.Entity("TableReservationSystem.Models.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("TableReservationSystem.Models.Table", b =>
