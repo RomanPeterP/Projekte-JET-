@@ -34,6 +34,10 @@ public partial class TableReservationSystemContext : DbContext
 
     public virtual DbSet<Doc> Docs { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<Role> Roles { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var sqlServerInstanceName = Environment.GetEnvironmentVariable("SqlServerInstanceName", EnvironmentVariableTarget.User);
@@ -162,6 +166,20 @@ public partial class TableReservationSystemContext : DbContext
             entity.HasOne(d => d.Restaurant).WithMany(p => p.Documents)
                 .HasForeignKey(d => d.RestaurantId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId);
+            entity.Property(e => e.UserId).UseIdentityColumn(1, 1);
+            entity.Property(e => e.UserName).HasMaxLength(50);
+            entity.Property(e => e.PasswordHash).HasMaxLength(100);
+            entity.Property(e => e.Email).HasMaxLength(30);
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.Property(e => e.RoleName).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);

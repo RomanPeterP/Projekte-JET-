@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TableReservationSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,6 +64,19 @@ namespace TableReservationSystem.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Roles",
+                columns: table => new
+                {
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Restaurant",
                 columns: table => new
                 {
@@ -90,6 +103,50 @@ namespace TableReservationSystem.Migrations
                         column: x => x.CountryCode,
                         principalTable: "Country",
                         principalColumn: "CountryCode");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "RoleId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Docs",
+                columns: table => new
+                {
+                    DocsId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    Document = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Extension = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: true),
+                    MimeType = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Docs", x => x.DocsId);
+                    table.ForeignKey(
+                        name: "FK_Docs_Restaurant_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurant",
+                        principalColumn: "RestaurantId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -159,6 +216,11 @@ namespace TableReservationSystem.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Docs_RestaurantId",
+                table: "Docs",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reservation_ContactInfoId",
                 table: "Reservation",
                 column: "ContactInfoId");
@@ -197,13 +259,24 @@ namespace TableReservationSystem.Migrations
                 name: "IX_Table_RestaurantId",
                 table: "Table",
                 column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoleId",
+                table: "Users",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Docs");
+
+            migrationBuilder.DropTable(
                 name: "Reservation");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "ReservationStatus");
@@ -213,6 +286,9 @@ namespace TableReservationSystem.Migrations
 
             migrationBuilder.DropTable(
                 name: "Table");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Restaurant");
