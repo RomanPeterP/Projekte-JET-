@@ -12,8 +12,8 @@ using TableReservationSystem.Data;
 namespace TableReservationSystem.Migrations
 {
     [DbContext(typeof(TableReservationSystemContext))]
-    [Migration("20250814124920_Initial3")]
-    partial class Initial3
+    [Migration("20250814130129_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
