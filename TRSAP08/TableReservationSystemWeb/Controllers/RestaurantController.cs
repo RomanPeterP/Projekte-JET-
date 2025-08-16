@@ -8,7 +8,7 @@ using TableReservationSystem.Viewmodels;
 
 namespace TableReservationSystemWeb.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class RestaurantController : Controller
     {
 
@@ -38,6 +38,8 @@ namespace TableReservationSystemWeb.Controllers
 
 
         [HttpGet]
+        
+
         public IActionResult List([FromQuery] RestaurantListViewModel? inViewModel)
         {
             var searchCriteria = _mapper.Map(inViewModel?.RestaurantSearchCriteriaViewModel);

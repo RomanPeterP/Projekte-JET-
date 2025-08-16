@@ -1,26 +1,36 @@
-﻿@{
+﻿@model TableReservationSystem.Viewmodels.LoginViewModel
+
+@{
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<h1>Login</h1>
 
-<form method="post" class="login-form">
-    <div>
-        <label for="username">Benutzername:</label><br />
-        <input type="text" id="username" name="username" class="input-full" />
+<h4>Benutzer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login" asp-controller="Account">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
+</div>
 
-    <div>
-        <label for="password">Passwort:</label><br />
-        <input type="password" id="password" name="password" class="input-full" />
-    </div>
-
-    <div>
-        <button type="submit" class="login-button">Login</button>
-    </div>
-</form>
-
-@if (ViewBag.Error != null)
-{
-    <p class="error-message">@ViewBag.Error</p>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -23,6 +23,11 @@ namespace TableReservationSystemWeb.Controllers
             _context = context;
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -43,8 +48,12 @@ namespace TableReservationSystemWeb.Controllers
 
             if (userRole == null)
             {
-                ModelState.AddModelError("", "User Role does not exist.");
-                return View(model);
+                userRole = new Role
+                {
+                    RoleName = "User"
+                };
+                await _context.Roles.AddAsync(userRole);
+                await _context.SaveChangesAsync();
             }
 
             user = new User()

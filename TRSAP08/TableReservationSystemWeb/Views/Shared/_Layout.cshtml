@@ -6,26 +6,30 @@
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-	<header></header>
+    <header>
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <p class="text-green-600">Angemeldet als @User.Identity.Name <a href="/Account/Logout" class="text-red-600 hover:underline">Logout</a></p>
 
-	<div class="container">
-		@if (User.Identity?.IsAuthenticated ?? false)
-		{
-			<p class="text-green-600">Angemeldet als @User.Identity.Name <a href="/Account/Logout" class="text-red-600 hover:underline">Logout</a></p>
-
-			<div>
-				<a asp-controller="Restaurant" asp-action="Register">Registrieren</a>
-				<a asp-controller="Restaurant" asp-action="List">Liste</a>
-			</div>
-		}
-		else
-		{
-			<a href="/Account/Login" class="text-blue-600 hover:underline">Login</a>
-		}
-		<main role="main">
-			@RenderBody()
-		</main>
-	</div>
+            <div>
+                <a asp-controller="Restaurant" asp-action="Register">Registrieren</a>
+                <a asp-controller="Restaurant" asp-action="List">Liste</a>
+            </div>
+        }
+        else
+        {
+            <a href="/Account/Login" class="text-blue-600 hover:underline">Login</a>        <a href="/Account/Register" class="text-blue-600 hover:underline">Register</a> 
+        }
+    </header>
+	<section class="section-body">
+        <div class="container">
+            
+            <main role="main">
+                @RenderBody()
+            </main>
+        </div>
+	</section>
+	
 
 	<footer>
 		<div class="container">
