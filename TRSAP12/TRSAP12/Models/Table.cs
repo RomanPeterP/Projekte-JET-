@@ -8,5 +8,6 @@ namespace TRSAP12.Models
         public bool Activ { get; set; }
         public bool Outside { get; set; }
         public List<Reservation> Reservation { get; set; }
+        // Test
     }
 }

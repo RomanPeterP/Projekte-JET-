@@ -1,12 +1,15 @@
-﻿namespace TRSAP12.Models
+﻿
+namespace TRSAP12.Models
 {
-    internal class VipReservation: Reservation
+    internal class VipReservation: Reservation, IWithSurchage, ISpecialServices
     {
         public bool HasWelcomeDrink { get; set; } = true;
+		public decimal? Surcharge { get; set; }
+		public IEnumerable<string>? SpecialServices { get; set; }
 
-        public override string GetInfo()
+		public override string GetInfo()
         {
-            return "Ich eine VIP-Reservierung";
+            return "Ich bin eine VIP-Reservierung";
         }
     }
 }
