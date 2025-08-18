@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using TableReservationSystem.Data;
+using TableReservationSystem.Models;
+using TableReservationSystem.Viewmodels;
 
 namespace TableReservationSystemWeb.Controllers
 {
@@ -8,9 +13,53 @@ namespace TableReservationSystemWeb.Controllers
     public class AccountController : Controller
     {
         private readonly IConfiguration _config;
-        public AccountController(IConfiguration config)
+        private readonly IPasswordHasher<User> _hasher;
+        private readonly TableReservationSystemContext _context;
+
+        public AccountController(IConfiguration config, IPasswordHasher<User> hasher, TableReservationSystemContext context)
         {
             _config = config;
+            _hasher = hasher;
+            _context = context;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(b => string.Equals(b.UserName, model.UserName)
+                || string.Equals(b.Email, model.Email));
+
+            if (user != null)
+            {
+                ModelState.AddModelError("", "Username or Email already in use.");
+                return View(model);
+            }
+
+            var userRole = _context.Roles.FirstOrDefault(r => r.RoleName == "User");
+
+            if (userRole == null)
+            {
+                ModelState.AddModelError("", "User Role does not exist.");
+                return View(model);
+            }
+
+            user = new User()
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                Role = userRole
+            };
+
+            user.PasswordHash = _hasher.HashPassword(user, model.Password);
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Login");
         }
 
         [HttpGet]
@@ -20,32 +69,39 @@ namespace TableReservationSystemWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var adminSection = _config.GetSection("AdminCredentials");
-            string storedUsername = adminSection["Username"]!;
-            string storedPassword = adminSection["Password"]!;
 
+            if (!ModelState.IsValid)
+                return View(model);
 
-            if (username.Trim().ToLower() == storedUsername.Trim().ToLower()
-                && password == storedPassword)
+            var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(b => b.UserName == model.UserName);
+
+            if (user == null)
             {
-                var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role, "Admin")
-            };
-
-                var identity = new ClaimsIdentity(claims, "TRSCookieAuth");
-                var principal = new ClaimsPrincipal(identity);
-
-                await HttpContext.SignInAsync("TRSCookieAuth", principal);
-
-                return RedirectToAction("List", "Restaurant");
+                ModelState.AddModelError("", "User not found.");
+                return View(model);
             }
 
-            ViewBag.Error = "Login fehlgeschlagen!";
-            return View();
+            var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, model.Password);
+            if (result != PasswordVerificationResult.Success)
+            {
+                ModelState.AddModelError("", "Wrong password.");
+                return View(model);
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, user.Role.RoleName)
+            };
+
+            var identity = new ClaimsIdentity(claims, "TRSCookieAuth");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("TRSCookieAuth", principal);
+
+            return RedirectToAction("List", "Restaurant");
         }
 
         public async Task<IActionResult> Logout()

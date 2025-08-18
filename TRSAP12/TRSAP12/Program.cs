@@ -29,14 +29,10 @@ namespace TRSAP12
             reservations.Add(vr);
             reservations.Add(fr);
 
-
             foreach (var reservation in reservations)
             {
                 Console.WriteLine(reservation.GetInfo());
             }
-            
-            
-
         }
     }
 }
