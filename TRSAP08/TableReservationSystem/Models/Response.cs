@@ -8,9 +8,6 @@ namespace TableReservationSystem.Models
         public StatusCode StatusCode { get; set; }
         public string? Message { get; set; }
 
-        public string? TestFuerMigration { get; set; }
-
-
         public IEnumerable<T>? Data { get; set; }
     }
 }

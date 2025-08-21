@@ -6,5 +6,7 @@ public class Country
 
     public string Name { get; set; } = null!;
 
+    public string? Name2 { get; set; }
+
     public virtual ICollection<Restaurant> Restaurants { get; set; } = new List<Restaurant>();
 }
