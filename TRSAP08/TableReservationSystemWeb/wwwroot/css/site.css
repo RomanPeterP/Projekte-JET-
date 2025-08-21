@@ -1,11 +1,39 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin:0px;
+}
+header {
+    padding: 10px 100px;
+    background-color: #145380;
+    color:white;
+}
+.text-green-600{
+    margin:5px 0px;
+}
+
+header a{
+    color:white;
+}
+    header a:visited {
+        color: white;
+    }
+
+    header a:hover {
+        color: #dedede;
+    }
+
+.section-body {
+    padding: 20px 100px;
+}
+
+footer {
+    padding: 10px 100px;
+    background-color: #145380;
+    color:white;
 }
 
 .form-container {
-    max-width: 600px;
-    margin: auto;
+    max-width: 600px;  
 }
 
 .form-group {
@@ -19,8 +47,9 @@ label {
 }
 
 input[type="text"],
-input[type="email"] {
-    width: 100%;
+input[type="email"],
+input[type="password"]{
+    width: 50%;
     padding: 0.4rem;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -38,14 +67,18 @@ input[type="email"] {
 
 .btn {
     padding: 0.5rem 1rem;
-    color: white;
+    background-color: #145380;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    color: white;
+    font: bold 14px Arial, sans-serif;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
     .btn:hover {
         background-color: #005fa3;
+        transform:scale(1.05);
     }
 
 .text-danger {
@@ -74,4 +107,59 @@ input[type="email"] {
     color: red;
     text-align: center;
 }
+
+
+
+hr{
+    height:2px;
+    background-color:black;
+    margin-bottom:30px;
+}
+
+@media(max-width:769px) {
+    .section-body {
+        padding: 20px 100px;
+    }
+
+    header {
+        padding: 0px 100px;
+    }
+
+    footer {
+        padding: 10px 100px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 0.4rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+}
+
+@media(max-width:426px) {
+    .section-body {
+        padding: 20px 20px;
+    }
+
+    header {
+        padding: 0px 20px;
+    }
+
+    footer {
+        padding: 10px 20px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 0.4rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+}
+
 

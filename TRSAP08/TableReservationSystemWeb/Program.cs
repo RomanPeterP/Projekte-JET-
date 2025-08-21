@@ -50,7 +50,7 @@ namespace TableReservationSystemWeb
             app.UseAuthorization();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Restaurant}/{action=Register}/{id?}");
+                pattern: "{controller=Account}/{action=Register}");
 
             app.Run();
         }
