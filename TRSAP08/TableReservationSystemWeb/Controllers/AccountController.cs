@@ -28,6 +28,7 @@ namespace TableReservationSystemWeb.Controllers
 
         public IActionResult Register()
         {
+            _logger.LogInformation("Register aufgerufen.");
             return View();
         }
 
