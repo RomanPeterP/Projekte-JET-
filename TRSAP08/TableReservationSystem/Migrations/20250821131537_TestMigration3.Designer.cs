@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TableReservationSystem.Data;
 
@@ -11,9 +12,11 @@ using TableReservationSystem.Data;
 namespace TableReservationSystem.Migrations
 {
     [DbContext(typeof(TableReservationSystemContext))]
-    partial class TableReservationSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20250821131537_TestMigration3")]
+    partial class TestMigration3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
