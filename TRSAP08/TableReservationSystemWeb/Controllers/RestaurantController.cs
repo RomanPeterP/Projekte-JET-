@@ -8,11 +8,9 @@ using TableReservationSystem.Viewmodels;
 
 namespace TableReservationSystemWeb.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class RestaurantController : Controller
     {
-
-
         private readonly IMiscLogic _misclogic;
         private readonly IRestaurantLogic _restaurantlogic;
         private readonly IRestaurantMapper _mapper;
