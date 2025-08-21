@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SerilogDemo.Controllers;
 using System.Security.Claims;
 using TableReservationSystem.Data;
 using TableReservationSystem.Models;
@@ -12,15 +13,17 @@ namespace TableReservationSystemWeb.Controllers
 
     public class AccountController : Controller
     {
+        private readonly ILogger<AccountController> _logger;
         private readonly IConfiguration _config;
         private readonly IPasswordHasher<User> _hasher;
         private readonly TableReservationSystemContext _context;
 
-        public AccountController(IConfiguration config, IPasswordHasher<User> hasher, TableReservationSystemContext context)
+        public AccountController(IConfiguration config, IPasswordHasher<User> hasher, TableReservationSystemContext context, ILogger<AccountController> logger)
         {
             _config = config;
             _hasher = hasher;
             _context = context;
+            _logger = logger;
         }
 
         public IActionResult Register()

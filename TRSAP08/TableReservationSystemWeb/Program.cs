@@ -1,3 +1,4 @@
+using CustomLogger;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TableReservationSystem.Data;
@@ -37,6 +38,7 @@ namespace TableReservationSystemWeb
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
 
+            builder.ConfigureLogger();
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())
