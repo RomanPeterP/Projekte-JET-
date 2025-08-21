@@ -110,7 +110,7 @@ namespace TableReservationSystemWeb.Controllers
 
             await HttpContext.SignInAsync("TRSCookieAuth", principal);
 
-            return RedirectToAction("List", "Restaurant");
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Logout()
