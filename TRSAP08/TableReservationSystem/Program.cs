@@ -7,7 +7,6 @@ using TableReservationSystem.Logic;
 using Microsoft.Extensions.Configuration;
 using TableReservationSystem.Models.Interfaces;
 using Microsoft.Extensions.Options;
-using CustomLogger;
 
 namespace TableReservationSystem
 {
@@ -21,7 +20,7 @@ namespace TableReservationSystem
                 .ConfigureServices((context, services) =>
                 {
                     services.AddDbContext<TableReservationSystemContext>(options =>
-                        options.UseSqlServer(Config.ConfigItems.GetConnectionString("default").
+                        options.UseSqlServer(Config.ConfigItems.GetConnectionString("Default").
                         Replace("@SqlServerInstanceName", sqlServerInstanceName)));
 
                     services.AddScoped<TableReservationSystemContext, TableReservationSystemContext>();
@@ -33,7 +32,6 @@ namespace TableReservationSystem
                     services.AddScoped<IRestaurantRepository, RestaurantRepository>();
                     services.AddScoped<IMiscRepository, MiscRepository>();
                 })
-                .ConfigureLogger()
                 .Build();
 
 
